@@ -1,0 +1,114 @@
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <string>
+#include <map>
+
+enum ConfigOptionType {
+    Float,WordSize,Lives,BgColor,TxtColor,Bool,FontT,CSize
+  };
+
+struct ConfigOption {
+
+
+    sf::RectangleShape button;
+    sf::Text label;
+    sf::Text value;
+
+
+    int intValue = 0;
+    int minIntVal = 0;
+    int maxIntVal = 0;
+
+    static float floatValue;
+    static float minFloatVal;
+    static float maxFloatVal;
+
+    bool boolValue = false;
+
+    static sf::Color colorValue;
+    sf::Color bgColor;
+    std::map<std::string, sf::Color> colorMap;
+
+    static int cSizeVal;
+
+
+    sf::Keyboard::Key keyInc;
+    std::pair<sf::RectangleShape, sf::Text> keyIncB;
+    sf::Keyboard::Key keyDec;
+    std::pair<sf::RectangleShape, sf::Text> keyDecB;
+
+
+    static sf::Font fontValue;
+    static std::string fontName;
+    std::map<std::string, sf::Font> fontMap;
+
+
+    std::pair<sf::RectangleShape, sf::Text> leftButton;
+    std::pair<sf::RectangleShape, sf::Text> rightButton;
+
+    ConfigOptionType configOptionType;
+
+
+
+
+    //CONSTRUCTORS
+
+    //INT VALUES
+    ConfigOption(sf::RectangleShape& button,const sf::Text& label,int nowIntVal,int minIntVal,int maxIntVal,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc,ConfigOptionType cOT);
+
+    //FLOAT VALUES
+    ConfigOption( sf::RectangleShape& button,const sf::Text& label,float floatValue,float minVal,float maxVal,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc);
+
+    //BOOL VALUES
+    ConfigOption( sf::RectangleShape& button,const sf::Text& label,const bool& boolValue,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc);
+
+    //COLOR VALUES
+    ConfigOption( sf::RectangleShape& button,const sf::Text& label,const sf::Color& colorValue,const std::map<std::string, sf::Color>& colorMap,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc,ConfigOptionType cOT);
+
+    //FONT
+    ConfigOption( sf::RectangleShape& button,sf::Text& label,const sf::Font& font,const std::map<std::string, sf::Font>& fontMap ,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc);
+
+
+
+    int updateIntValue(int newValue);
+    int getIntValue() const;
+
+    float updateFloatValue(float newValue);
+    float getFloatValue() const;
+
+
+    bool updateBoolValue(const bool& newValue);
+    bool getBoolValue() const;
+
+
+    int updateCSizeValue(int newValue);
+    void updateCSize();
+    int getCSizeVal();
+
+    sf::Color nextColor();
+    sf::Color prevColor();
+    void updateColorValue(const sf::Color& newValue);
+    sf::Color getColorValue() const;
+
+    void draw(sf::RenderWindow& window) const;
+
+
+    void updateFont();
+    void updateFontValue(const sf::Font& newValue,const std::string& newFontName);
+    std::string getFontName() const;
+    sf::Font getFont() const;
+    sf::Font nextFont();
+    sf::Font prevFont();
+
+
+    void setRectColor();
+
+
+    bool isIncPressed(const sf::Event::KeyPressed& e) const;
+    bool isDecPressed(const sf::Event::KeyPressed& e) const;
+
+
+    void update();
+};
+
+

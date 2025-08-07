@@ -1,17 +1,19 @@
 #pragma once
-#include "../Configuration/ConfigOption.hpp"
-#include "../WordEntity.hpp"
 #include <vector>
+#include <fstream>
+#include <iostream>
+#include <SFML/Graphics.hpp>
+#include <fmt/ostream.h>//for writing results
 
-#include "../GameState.hpp"
+#include "../../GameStates/GameState.hpp"
+#include "../ConfigMenu/ConfigOption.hpp"
+#include "WordEntity.hpp"
 
 
 //ALL NECESSARY COMMS WAS WRITTEN IN CPP FILE
-
-
-struct GamePlay {
+class GamePlay{
+    public:
     GamePlay(sf::RenderWindow& window,const std::vector<std::string>& wordList);
-
 
     sf::RenderWindow& window;
 
@@ -32,6 +34,7 @@ struct GamePlay {
     static sf::Text scoreText;
     static int score;
 
+    std::string fullWord;
 
     int wordsTyped = 0;
     sf::Text statsText;
@@ -40,7 +43,7 @@ struct GamePlay {
 
 
 
-    std::string lastWord = "";
+    std::string lastWord;
 
 
 

@@ -1,5 +1,4 @@
 #include "ConfigClick.hpp"
-#include <SFML/Graphics.hpp>
 
 namespace ConfigClick {
     using namespace sf;

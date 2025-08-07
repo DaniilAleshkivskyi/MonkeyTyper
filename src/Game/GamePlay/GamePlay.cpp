@@ -1,10 +1,5 @@
 #include "GamePlay.hpp"
 
-#include <fstream>
-#include <iostream>
-#include <SFML/Graphics.hpp>
-#include <fmt/ostream.h>//for writing results
-
 
 sf::RectangleShape GamePlay::interfaceBox;
 sf::Font GamePlay::fontT;
@@ -165,7 +160,7 @@ void GamePlay::reset() {
     wordsOnScreen.clear();
     userInput.clear();
     score = 0;
-    WordEntity::typedPart.clear();
+    WordEntity::clearTypedPart();
     spawnClock.restart();
     scoreText.setString("Score: 0");
     statsText.setString("Correctly typed words: 0");
@@ -181,7 +176,7 @@ GameState GamePlay::update(float dt) {
 
     //SETTING INPUT STR
     userTextInput.setString(userInput);
-    WordEntity::typedPart = userInput;
+    WordEntity::setTypedPart(userInput);
 
    //SPAWNING
     if (spawnClock.getElapsedTime().asSeconds() >= spawnRate && !wordList.empty()) {
@@ -201,10 +196,11 @@ GameState GamePlay::update(float dt) {
 
     //ERASING WORDS
     for (auto it = wordsOnScreen.begin(); it != wordsOnScreen.end(); ++it) {
-        if ((*it).fullWord == userInput) {
-            scoreCounter((*it).fullWord,spawnRate);
+        fullWord = (*it).getFullWord();
+        if (fullWord == userInput) {
+            scoreCounter(fullWord,spawnRate);
             wordsOnScreen.erase(it);
-            lastWord = (*it).fullWord;
+            lastWord = fullWord;
             wordsTyped++;
             statsText.setString("Correctly typed words: " + std::to_string(wordsTyped));
 
@@ -216,7 +212,7 @@ GameState GamePlay::update(float dt) {
 
     //MOVEMENT
     for (auto& word : wordsOnScreen) {
-        word.text.move({word.speed * dt, 0.f});
+        word.getText().move({word.getSpeed() * dt, 0.f});
         if (highlight) {
             word.updateHighlight();
         }
@@ -225,7 +221,7 @@ GameState GamePlay::update(float dt) {
 
         //LIVES AND BEST SCORES WRITING
         for (auto it = wordsOnScreen.begin(); it != wordsOnScreen.end();) {
-            if ((*it).text.getPosition().x > deadLine.getPosition().x) {
+            if ((*it).getText().getPosition().x > deadLine.getPosition().x) {
                 if (lives > 0) {
                     lives--;
                     if (lives == 0) {
@@ -259,8 +255,11 @@ void GamePlay::draw() {
     window.draw(instr);
     window.draw(txtInputBox);
     for (const auto& word : wordsOnScreen) {
-        window.draw(word.text);
-        window.draw(word.highlightText);
+        window.draw(word.getText());
+        if (highlight) {
+            window.draw(word.getHighlightedText());
+        }
+
     }
 }
 
@@ -275,7 +274,7 @@ void GamePlay::getWordsFull(const int value){
     }
 }
 
-//SCORE COUNTER...
+//SCORE COUNTER
 void GamePlay::scoreCounter(std::string word,float spRate) {
     int wordLength = word.length();
     int multiplier = 0;

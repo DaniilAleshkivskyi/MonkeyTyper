@@ -2,12 +2,14 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
+#include <iomanip>//for float as float is like 2.0000000000000000 and we wanna do smth like 2.0
 
 enum ConfigOptionType {
     Float,WordSize,Lives,BgColor,TxtColor,Bool,FontT,CSize
   };
 
-struct ConfigOption {
+class ConfigOption {
+    public:
 
 
     sf::RectangleShape button;

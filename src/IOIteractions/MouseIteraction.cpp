@@ -1,4 +1,4 @@
-#include <SFML/Graphics.hpp>
+#include "../IOIteractions/MouseIteraction.hpp"
 
 using namespace sf;
 
@@ -51,10 +51,6 @@ namespace MouseIter{
 
         return false;
     }
-
-
-
-
 }
 
 

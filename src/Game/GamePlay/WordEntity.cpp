@@ -1,5 +1,7 @@
 #include "WordEntity.hpp"
 
+#include "fmt/compile.h"
+
 sf::Font WordEntity::fontT;
 std::string WordEntity::typedPart;
 int WordEntity::charSize;
@@ -35,6 +37,33 @@ void WordEntity::updateHighlight() {
         highlightText.setString("");
     }
 }
+
+void WordEntity::clearTypedPart() {
+    typedPart.clear();
+}
+void WordEntity::setTypedPart(const std::string& typedTxt) {
+    typedPart = typedTxt;
+}
+std::string WordEntity::getFullWord() const {
+    return fullWord;
+}
+const sf::Text& WordEntity::getText() const{
+    return text;
+}
+sf::Text& WordEntity::getText() {
+    return text;
+}
+const sf::Text& WordEntity::getHighlightedText() const{
+    return highlightText;
+}
+sf::Text& WordEntity::getHighlightedText(){
+    return highlightText;
+}
+float WordEntity::getSpeed() const {
+    return speed;
+}
+
+
 
 
 bool WordEntity::isFullyTyped() const {

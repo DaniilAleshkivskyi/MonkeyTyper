@@ -1,5 +1,5 @@
 #pragma once
-#include "./ConfigOption.hpp"
+#include "ConfigOption.hpp"
 #include <SFML/Graphics.hpp>
 
 namespace ConfigClick {

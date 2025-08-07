@@ -19,11 +19,7 @@ namespace CenterEnt{
             (window.getSize().y - shape.getSize().y) / 2.f
         });
     }
-
-
-
-
-    }
+}
 
 
 namespace CenterVecEnt{

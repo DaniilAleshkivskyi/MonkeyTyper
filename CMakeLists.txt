@@ -29,19 +29,31 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(SFML)
 
 add_executable(MonkeyTyper main.cpp
-        src/WordEntity.cpp
-        src/WordEntity.hpp
-        src/GameState.hpp
+        src/Game/GamePlay/WordEntity.cpp
+        src/Game/GamePlay/WordEntity.hpp
+        src/GameStates/GameState.hpp
         src/helpers/CenterEntity.cpp
         src/helpers/CenterEntity.hpp
         src/IOIteractions/MouseIteraction.hpp
         src/IOIteractions/MouseIteraction.cpp
         src/helpers/PlaceChooseMenu.cpp
         src/helpers/PlaceChooseMenu.hpp
-        src/Configuration/ConfigOption.cpp
-        src/Configuration/ConfigOption.hpp
-        src/Configuration/ConfigClick.hpp
-        src/Configuration/ConfigClick.cpp
-        src/GamePlay/GamePlay.hpp
-        src/GamePlay/GamePlay.cpp)
+        src/Game/ConfigMenu/ConfigOption.cpp
+        src/Game/ConfigMenu/ConfigOption.hpp
+        src/Game/ConfigMenu/ConfigClick.hpp
+        src/Game/ConfigMenu/ConfigClick.cpp
+        src/Game/GamePlay/GamePlay.hpp
+        src/Game/GamePlay/GamePlay.cpp
+        src/Game/Game.cpp
+        src/Game/Game.hpp
+        src/Game/MainMenu/MainMenu.cpp
+        src/Game/MainMenu/MainMenu.hpp
+        src/Game/Game.cpp
+        src/Game/Game.hpp
+        src/Game/BestScoresMenu/BestScoresMenu.cpp
+        src/Game/BestScoresMenu/BestScoresMenu.hpp
+        src/GameStates/IGameState.hpp
+        src/Game/ConfigMenu/ConfigMenu.cpp
+        src/Game/ConfigMenu/ConfigMenu.hpp
+)
 target_link_libraries(MonkeyTyper PRIVATE SFML::Graphics fmt)

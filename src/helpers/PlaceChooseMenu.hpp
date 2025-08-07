@@ -1,5 +1,5 @@
 #pragma once
-#include "../Configuration/ConfigOption.hpp"
+#include "../Game/ConfigMenu/ConfigOption.hpp"
 
 namespace ChooseMenu {
     void RectSetVecLeft(std::vector<sf::RectangleShape>& shapes,

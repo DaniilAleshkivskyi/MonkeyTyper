@@ -1,6 +1,4 @@
 #include "ConfigOption.hpp"
-#include <string>
-#include <iomanip>//for float as float is like 2.0000000000000000 and we wanna do smth like 2.0
 
 
 std::pair<sf::RectangleShape, sf::Text> createButton(const sf::Font& font, const std::string& txt);
@@ -173,7 +171,7 @@ sf::Color ConfigOption::nextColor() {
         }
     }
     if (it == colorMap.end()) {
-        it = colorMap.begin(); // вернуться в начало, если дошли до конца
+        it = colorMap.begin();
     }
     updateColorValue((*it).second);
     return (*it).second;

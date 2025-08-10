@@ -55,5 +55,7 @@ add_executable(MonkeyTyper main.cpp
         src/GameStates/IGameState.hpp
         src/Game/ConfigMenu/ConfigMenu.cpp
         src/Game/ConfigMenu/ConfigMenu.hpp
+        src/Game/GamePlay/PauseMenu.cpp
+        src/Game/GamePlay/PauseMenu.hpp
 )
 target_link_libraries(MonkeyTyper PRIVATE SFML::Graphics fmt)

@@ -15,7 +15,6 @@ class ConfigMenu : public IGameState {
     sf::Font& font;
     sf::Color wordsColor;
     sf::Color defaultBackgroundColor;
-    bool isWordsColorChanged;
 
     void init() override;
     void update(const sf::Event& event) override;
@@ -56,7 +55,6 @@ class ConfigMenu : public IGameState {
     std::map<std::string, sf::Font> fontMap;
     sf::RectangleShape buttonTemplate;
     sf::Text labelTemplate;
-    sf::Color colorNow;
     bool isClicked;
     sf::RectangleShape startButt;
     sf::Text startText;

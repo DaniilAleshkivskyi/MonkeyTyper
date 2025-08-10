@@ -7,7 +7,7 @@ ConfigMenu::ConfigMenu(sf::RenderWindow &win,GamePlay &gameplay):window(win),
                                               gamePlay(gameplay),
                                               font(Game::getFont()),
                                               wordsColor(sf::Color::Black),
-                                              isWordsColorChanged(false),isHighlighted(true),isClicked(false),
+                                              isHighlighted(true),isClicked(false),
                                               charSizeMin(10),charSizeNow(30),charSizeMax(40),
                                               defaultBackgroundColor(sf::Color(215, 108, 130)),
                                               labelTemplate(sf::Text(font,"",charSizeNow)),
@@ -24,14 +24,12 @@ ConfigMenu::ConfigMenu(sf::RenderWindow &win,GamePlay &gameplay):window(win),
                                                   {"Green",sf::Color::Green},
                                                   {"Magenta",sf::Color::Magenta},
                                                   {"Red",sf::Color::Red}},
-                                              colorNow(colorMap["Default(Pink)"]),
                                               startButt({300,100}),
                                               startText(font,"START",charSizeNow)
 
 
-
 {
-    Game::bgColor = colorNow;
+    Game::changeBgColor(colorMap["Default(Pink)"]);
 
     if (!font2.openFromFile("../assets/fonts/DynaPuff-Regular.ttf")) {
         throw std::runtime_error("Could not open font2 file");
@@ -59,8 +57,6 @@ ConfigMenu::ConfigMenu(sf::RenderWindow &win,GamePlay &gameplay):window(win),
 
 void ConfigMenu::init() {
      // ---------- Font ----------
-
-    /*RAZMERY CHAROW ILI TEXTA*/
      labelTemplate.setString("Font");
      configOptions.emplace_back(buttonTemplate, labelTemplate, font, fontMap,sf::Keyboard::Key::F11,sf::Keyboard::Key::F12);
 
@@ -105,8 +101,6 @@ void ConfigMenu::init() {
      CenterEnt::RectSpTextCentre(startText,startButt,window);
 }
 void ConfigMenu::update(const sf::Event& event) {
-    std::cout << livesNow << std::endl;
-
                  auto const e = event.getIf<sf::Event::KeyPressed>();
 
                  if (isButtonPressed(sf::Mouse::Button::Left) || e){
@@ -145,12 +139,11 @@ void ConfigMenu::update(const sf::Event& event) {
                                          break;
                                      }
                                      case BgColor: {
-                                         colorNow = opt.prevColor();
+                                         Game::changeBgColor(opt.prevColor());
                                          break;
                                      }
                                      case TxtColor: {
                                          wordsColor = opt.prevColor();
-                                         isWordsColorChanged = true;
                                          for (auto& i : configOptions) {
                                              if (i.configOptionType != TxtColor) {
                                                  i.update();
@@ -204,12 +197,11 @@ void ConfigMenu::update(const sf::Event& event) {
                                          break;
                                      }
                                      case BgColor: {
-                                         colorNow = opt.nextColor();
+                                         Game::changeBgColor(opt.nextColor());
                                          break;
                                      }
                                      case TxtColor: {
                                          wordsColor = opt.nextColor();
-                                         isWordsColorChanged = true;
                                          for (auto& i : configOptions) {
                                              if (i.configOptionType != TxtColor) {
                                                  i.update();
@@ -239,19 +231,20 @@ void ConfigMenu::update(const sf::Event& event) {
                  } else {
                      isClicked = false;
                  }
-                 if (MouseIter::leftMousewasClicked(window,startButt)) {
-                     gamePlay.updateParams(font,wordsColor,wordSpawnNow,livesNow,wordSizeNow,charSizeNow,isHighlighted);
-                     Game::setState(GameState::Gameplay);
+
+
+                 if (Game::getState() != GameState::Settings && Game::isPaused != IsPaused::SettingsPaused) {
+                     if (MouseIter::leftMousewasClicked(window,startButt)) {
+                         gamePlay.updateParams(font,wordsColor,wordSpawnNow,livesNow,wordSizeNow,charSizeNow,isHighlighted);
+                         Game::setState(GameState::Gameplay);
+                     }
                  }
 }
 void ConfigMenu::draw() {
-    if (isWordsColorChanged) {
-        startText.setFillColor(wordsColor);
-        isWordsColorChanged = false;
+    if (Game::getState() == GameState::ConfigurationMenu) {
+        window.draw(startButt);
+        window.draw(startText);
     }
-
-    window.draw(startButt);
-    window.draw(startText);
     for (const auto& opt : configOptions) {
         opt.draw(window);
     }

@@ -1,4 +1,5 @@
 #include "GamePlay.hpp"
+#include "../Game.hpp"
 
 
 sf::RectangleShape GamePlay::interfaceBox;
@@ -12,8 +13,15 @@ int GamePlay::wordSize = 0;
 
 
 GamePlay::GamePlay(sf::RenderWindow& window,const std::vector<std::string>& wordList)
-    :window(window),wordList(wordList),userTextInput(fontT,"Lives 10",40),livesText(fontT,"",40),statsText(fontT,"Correctly typed words: " + std::to_string(wordsTyped),cSize),instr(fontT,"For cleaning input: \"Enter\"\nTo clean previous char: \"Backspace\"",cSize),txtInputBox(fontT,"INPUT",cSize){
+    :window(window),
+wordList(wordList),
+userTextInput(fontT,"Lives 10",40),
+livesText(fontT,"",40),
+statsText(fontT,"Correctly typed words: " + std::to_string(wordsTyped),cSize),
+instr(fontT,"For cleaning input: \"Enter\"\nTo clean previous char: \"Backspace\"",cSize),
+txtInputBox(fontT,"INPUT",cSize){}
 
+void GamePlay::init() {
 
     //DEADLINE FOR WORDS
     deadLine.setSize({30,window.getSize().y - 300.f});
@@ -55,18 +63,19 @@ GamePlay::GamePlay(sf::RenderWindow& window,const std::vector<std::string>& word
 
     instr.setPosition({livesText.getPosition().x,statsText.getPosition().y + 70});
     instr.setFillColor(sf::Color::Black);
-};
+}
 
 
-void GamePlay::updateParams(const sf::Font &fontE, sf::Color wordColorE, float spawnRateE, int livesE, int wordSizeE, int charSizeE, const bool& highlightedE) {
-    fontT = fontE;
-    wordColor = wordColorE;
-    spawnRate = spawnRateE;
-    lives = livesE;
-    wordSize = wordSizeE;
-    getWordsFull(wordSizeE);
-    cSize = charSizeE;
-    highlight = highlightedE;
+
+void GamePlay::updateParams(const sf::Font &newFont, sf::Color newWordColor, float newSpawnRate, int newLives, int newWordSize, int newCharSize, const bool& newHighlighted) {
+    fontT = newFont;
+    wordColor = newWordColor;
+    spawnRate = newSpawnRate;
+    lives = newLives;
+    wordSize = newWordSize;
+    getWordsFull(wordSize);
+    cSize = newCharSize;
+    highlight = newHighlighted;
     livesText.setCharacterSize(cSize);
     livesText.setFont(fontT);
     livesText.setString("Lives " + std::to_string(lives));
@@ -134,9 +143,6 @@ void GamePlay::handleInput(const sf::Event& event){
         //CONVERTING TO UNICODE TO READ WHICH KEY WAS ENTERED
         const char charInt =  e->unicode;
 
-        //CONVERTING INT TO CHAR TO ADD TO STR
-        const char toChar = charInt;
-
         if (charInt == 8 && !userInput.empty()) {
             userInput.pop_back();// Backspace
         }else if (charInt == 13) {
@@ -146,7 +152,7 @@ void GamePlay::handleInput(const sf::Event& event){
 
         if (notOutOfBorders()) {
             if (charInt > 64){
-                userInput+=toChar;
+                userInput+=charInt;
             }
         } else {
         //if out of borders just ignoring input
@@ -172,7 +178,8 @@ void GamePlay::reset() {
 
 
 //CLASS FOR UPDATING GAMEPLAY,DETAILS DOWNSIDE
-GameState GamePlay::update(float dt) {
+void GamePlay::update(float dt, const sf::Event& event) {
+    handleInput(event);
 
     //SETTING INPUT STR
     userTextInput.setString(userInput);
@@ -229,7 +236,7 @@ GameState GamePlay::update(float dt) {
                         if (score!=0) {
                             fmt::print(file, "{}\n", score);
                         }
-                        return GameState::GameOver;
+                        Game::setState(GameState::GameOver);
                     }
                     livesText.setString("Lives: " + std::to_string(lives));
                     it = wordsOnScreen.erase(it);
@@ -238,12 +245,10 @@ GameState GamePlay::update(float dt) {
                 ++it;
             }
         }
-    return GameState::Gameplay;
-
 }
 
 
-//DRAWING ALL
+//DRAWING
 void GamePlay::draw() {
     window.draw(livesText);
     window.draw(userTextInput);
@@ -295,27 +300,28 @@ void  GamePlay::updateFont(const sf::Font& newFont) {
     fontT = newFont;
     newFontOutOfBorders();
 };
-void  GamePlay::updateWordColor(const sf::Color& newColor) {
+void  GamePlay::updateWordColor(sf::Color newColor) {
     wordColor = newColor;
 };
-void  GamePlay::updateSpawnRate(const float& newSpawnRate) {
+void  GamePlay::updateSpawnRate(float newSpawnRate) {
     spawnRate = newSpawnRate;
 };
-void  GamePlay::updateLives(const int& newLives) {
+void  GamePlay::updateLives(int newLives) {
     lives = newLives;
     livesText.setString("Lives: " + std::to_string(lives));
 };
 
 int GamePlay::livesValueChanged() {
+    std::cout<<"livesValueChanged : "<< lives <<std::endl;
     return lives;
 };
-void  GamePlay::updateCSize(const int& newCSize) {
+void  GamePlay::updateCSize(int newCSize) {
     cSize = newCSize;
 };
-void  GamePlay::updateHighlight(const bool& newHighlight) {
+void  GamePlay::updateHighlight(bool newHighlight) {
     highlight = newHighlight;
 };
-void GamePlay::updateWordSize(const int& newWordSize) {
+void GamePlay::updateWordSize(int newWordSize) {
     wordSize = newWordSize;
     getWordsFull(newWordSize);
 };

@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/ostream.h>//for writing results
 
+#include "PauseMenu.hpp"
 #include "../../GameStates/GameState.hpp"
 #include "../ConfigMenu/ConfigOption.hpp"
 #include "WordEntity.hpp"
@@ -15,6 +16,8 @@ class GamePlay{
     public:
     GamePlay(sf::RenderWindow& window,const std::vector<std::string>& wordList);
 
+    void init();
+
     sf::RenderWindow& window;
 
     sf::RectangleShape deadLine;
@@ -23,7 +26,7 @@ class GamePlay{
     static sf::Font fontT;
     static sf::Color wordColor;
     static float spawnRate;
-    int lives = 0;
+    int lives = 3;
     static int cSize;
     bool highlight;
     static int wordSize;
@@ -65,7 +68,7 @@ class GamePlay{
 
     void updateParams(const sf::Font& fontT,sf::Color wordColor,float spawnRate,int lives,int wordSize,int charSize,const bool& highlighted);
     void handleInput(const sf::Event& event);
-    GameState update(float dt);
+    void update(float dt,const sf::Event& event);
     void draw();
 
 
@@ -84,18 +87,17 @@ class GamePlay{
 
     //UPDATING FOR EACH PARAM
     void updateFont(const sf::Font& newFont);
-    void updateWordColor(const sf::Color& newColor);
-    void updateSpawnRate(const float& newSpawnRate);
-    void updateLives(const int& newLives);
-    int livesValueChanged();
-    void updateCSize(const int& newCSize);
-    void updateHighlight(const bool& newHighlight);
-    void updateWordSize(const int& newWordSize);
+    void updateWordColor(sf::Color newColor);
+    void updateSpawnRate(float newSpawnRate);
+    void updateLives(int newLives);
+    int  livesValueChanged();
+    void updateCSize(int newCSize);
+    void updateHighlight(bool newHighlight);
+    void updateWordSize(int newWordSize);
 
 
     std::string getGameOverScore();
     std::string getGameOverWords();
     std::string getGameOverLastWord();
-
 };
 

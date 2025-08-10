@@ -686,18 +686,7 @@
 //
 //
 //         /*-----------------------------------------------------*GAMEPLAY MOVING ETC.*---------------------------------------------------------------*/
-//             float dt = deltaClock.restart().asSeconds();
-//             if (state == GameState::Gameplay) {
-//                 if (isPaused == IsPaused::Unpaused) {
-//                     state = gamePlay.update(dt);
-//                     if (state == GameState::GameOver) {
-//                         gameOverScore.setString(gamePlay.getGameOverScore());
-//                         gameOverWords.setString(gamePlay.getGameOverWords());
-//                         gameOverLastWord.setString(gamePlay.getGameOverLastWord());
-//                         gamePlay.reset();
-//                     }
-//                 }
-//             }
+//
 //
 //
 //         /*--------------------------------------------------*DRAWING*---------------------------------------------------------------*/

@@ -14,10 +14,11 @@ bool Game::justExitedPause = false;
 bool Game::scoresOpen = true;
 Color Game::bgColor = Color::Black;
 
-Game::Game() : mainMenu(window), gamePlay(window,wordList),configMenu(window,gamePlay), bestScoresMenu(window){
-
-
-
+Game::Game() : mainMenu(window),
+               gamePlay(window,wordList),
+               configMenu(window,gamePlay),
+               bestScoresMenu(window),
+               pauseMenu(window){
     run();
 }
 
@@ -39,10 +40,11 @@ void Game::run() {
     mainMenu.init();
     bestScoresMenu.init();
     configMenu.init();
+    gamePlay.init();
+    pauseMenu.init();
     Clock clock;
     while (window.isOpen()) {
         float dt = clock.restart().asSeconds();
-
         update(dt);
         draw();
     }
@@ -51,13 +53,14 @@ void Game::run() {
 
 
 void Game::update(float dt) {
-        while (auto const event = window.pollEvent()) {
+    while (auto const event = window.pollEvent()) {
             if (event->is<Event::Closed>()){
                 window.close();
             }
 
             if (state == GameState::MainMenu) {
                 if (justExitedPause) {
+                    gamePlay.reset();
                     justExitedPause = false;
                     break;
                 }
@@ -66,15 +69,44 @@ void Game::update(float dt) {
             if (state == GameState::BestScores) {
                 bestScoresMenu.update(*event);
             }
-            if ( state == GameState::ConfigurationMenu||state == GameState::Settings || state == GameState::Gameplay || isPaused == IsPaused::SettingsPaused) {
-                if ( state == GameState::ConfigurationMenu || state == GameState::Settings) {
-                    if (auto const e = event->getIf<Event::KeyPressed>()) {
-                        if (e->code == sf::Keyboard::Key::Escape) {
-                            state = GameState::MainMenu;
+            if ( state == GameState::ConfigurationMenu || state == GameState::Settings) {
+                if (auto const e = event->getIf<Event::KeyPressed>()) {
+                    if (e->code == Keyboard::Key::Escape) {
+                        state = GameState::MainMenu;
+                    }
+                }
+            }
+            configMenu.update(*event);
+
+
+            if (state == GameState::Gameplay) {
+                if (isPaused == IsPaused::Paused) {
+                    pauseMenu.update(*event);
+                }
+                if (auto const e = event->getIf<Event::KeyPressed>()) {
+                    if (isPaused!=IsPaused::SettingsPaused) {
+                        if (e->code == Keyboard::Key::Escape) {
+                            isPaused = (isPaused == IsPaused::Unpaused) ? IsPaused::Paused : IsPaused::Unpaused;
+                        }
+                    }else{
+                        //For SettingsPaused
+                        if (e->code == Keyboard::Key::Escape) {
+                            isPaused = IsPaused::Paused;
                         }
                     }
                 }
-                configMenu.update(*event);
+
+
+
+                if (isPaused == IsPaused::Unpaused) {
+                    gamePlay.update(dt,*event);
+                    if (state == GameState::GameOver) {
+                        /*gameOverScore.setString(gamePlay.getGameOverScore());
+                        gameOverWords.setString(gamePlay.getGameOverWords());
+                        gameOverLastWord.setString(gamePlay.getGameOverLastWord());*/
+                        gamePlay.reset();
+                    }
+                }
             }
         }
 }
@@ -84,38 +116,67 @@ void Game::draw() {
     window.clear(bgColor);
     switch (state) {
         case GameState::MainMenu:
+
             mainMenu.draw();
             break;
+
         case GameState::BestScores:
+
             bestScoresMenu.draw();
             break;
+
+        case GameState::ConfigurationMenu:
+        case GameState::Settings:
+
+             configMenu.draw();
+             break;
+
+        case GameState::Gameplay:
+            if (isPaused != IsPaused::SettingsPaused) {
+                gamePlay.draw();
+            }
+
+            if (isPaused == IsPaused::Paused) {
+                pauseMenu.draw();
+            }else if (isPaused == IsPaused::SettingsPaused) {
+                configMenu.draw();
+            }
+
     }
-    if (state == GameState::MainMenu) {
-        mainMenu.draw();
-    }else if (state == GameState::BestScores) {
-        bestScoresMenu.draw();
-    }else if (state == GameState::ConfigurationMenu||state == GameState::Settings) {
-        configMenu.draw();
-    }
+
+    /*
+    if (state == GameState::GameOver) {
+        window.draw(gameOverOverlay);
+        window.draw(gameOverText);
+        window.draw(gameOverScore);
+        window.draw(gameOverWords);
+        window.draw(gameOverLastWord);
+        for (auto& shape :vecButtGameOver) {
+            window.draw(shape);
+        }
+        for (auto& text :vecTextGameOver ) {
+            window.draw(text);
+        }
+    }*/
+
+
+
+
     window.display();
 }
 
 void Game::setState(GameState newState) {
     state = newState;
 }
-
 Font& Game::getFont() {
     return font;
 }
 void Game::setFont(Font& newFont) {
     font = newFont;
 }
-
 RenderWindow& Game::getWindow() {
     return window;
 }
-
-
  Color Game::getColorButt() {
     return colorButt;
 }
@@ -124,4 +185,10 @@ Color Game::getHooverButt() {
 }
  Vector2f Game::getButtSize() {
     return buttSize;
+}
+GameState Game::getState() {
+    return state;
+}
+void Game::changeBgColor(Color newColor) {
+    bgColor = newColor;
 }

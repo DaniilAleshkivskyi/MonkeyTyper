@@ -26,13 +26,7 @@ class Game{
 public:
     Game();
     void run();
-    template <typename T>
- T* getstate() {
-        switch (state) {
-            case GameState::MainMenu: return &mainMenu;
-            /*case GameState::Gameplay: return &gamePlay;*/
-        }
-    }
+    static GameState getState();
     static void setState(GameState newState);
     static sf::Font& getFont();
     static void setFont(sf::Font& font);
@@ -43,8 +37,7 @@ public:
     static sf::Vector2f getButtSize();
     static bool scoresOpen;
     static sf::Color bgColor;
-
-    private:
+    static void changeBgColor(sf::Color newColor);
 
     static bool justExitedPause;
 
@@ -67,6 +60,7 @@ public:
     MainMenu mainMenu;
     ConfigMenu configMenu;
     BestScoresMenu bestScoresMenu;
+    PauseMenu pauseMenu;
     GamePlay gamePlay;
 
 };

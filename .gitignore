@@ -4,6 +4,7 @@
 *.dll
 *.so
 *.out
+saves/BestScores.txt
 
 build/
 Build/

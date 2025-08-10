@@ -99,7 +99,7 @@ void Game::update(float dt) {
 
 
                 if (isPaused == IsPaused::Unpaused) {
-                    gamePlay.update(dt,*event);
+                    gamePlay.handleInput(*event);
                     if (state == GameState::GameOver) {
                         /*gameOverScore.setString(gamePlay.getGameOverScore());
                         gameOverWords.setString(gamePlay.getGameOverWords());
@@ -109,6 +109,16 @@ void Game::update(float dt) {
                 }
             }
         }
+
+
+    //UPDATING GAMEPLAY WHENEVER EVENT EXISTS OR NOT
+    //--PollEvent returns false if there is no event,but while state == gameplay we must update it every frame
+
+
+    if (state == GameState::Gameplay && isPaused == IsPaused::Unpaused) {
+        gamePlay.update(dt);
+    }
+
 }
 
 

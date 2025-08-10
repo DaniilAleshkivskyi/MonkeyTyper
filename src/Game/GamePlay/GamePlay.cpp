@@ -12,7 +12,7 @@ int GamePlay::score = 0;
 int GamePlay::wordSize = 0;
 
 
-GamePlay::GamePlay(sf::RenderWindow& window,const std::vector<std::string>& wordList)
+GamePlay::GamePlay(sf::RenderWindow& window,std::vector<std::string>& wordList)
     :window(window),
 wordList(wordList),
 userTextInput(fontT,"Lives 10",40),
@@ -63,6 +63,12 @@ void GamePlay::init() {
 
     instr.setPosition({livesText.getPosition().x,statsText.getPosition().y + 70});
     instr.setFillColor(sf::Color::Black);
+
+    #if defined(__APPLE__) && defined(__MACH__)
+    instr.setString("For cleaning input: \"Return\"\nTo clean previous char: \"Delete\"");
+    #endif
+
+
 }
 
 
@@ -145,7 +151,7 @@ void GamePlay::handleInput(const sf::Event& event){
 
         if (charInt == 8 && !userInput.empty()) {
             userInput.pop_back();// Backspace
-        }else if (charInt == 13) {
+        }else if (charInt == 13|| charInt == 10) {
             userInput.clear();//if enter -> clear word
         }
 
@@ -178,9 +184,7 @@ void GamePlay::reset() {
 
 
 //CLASS FOR UPDATING GAMEPLAY,DETAILS DOWNSIDE
-void GamePlay::update(float dt, const sf::Event& event) {
-    handleInput(event);
-
+void GamePlay::update(float dt) {
     //SETTING INPUT STR
     userTextInput.setString(userInput);
     WordEntity::setTypedPart(userInput);

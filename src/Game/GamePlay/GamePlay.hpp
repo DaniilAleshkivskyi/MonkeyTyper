@@ -14,7 +14,7 @@
 //ALL NECESSARY COMMS WAS WRITTEN IN CPP FILE
 class GamePlay{
     public:
-    GamePlay(sf::RenderWindow& window,const std::vector<std::string>& wordList);
+    GamePlay(sf::RenderWindow& window,std::vector<std::string>& wordList);
 
     void init();
 
@@ -50,7 +50,7 @@ class GamePlay{
 
 
 
-    std::vector<std::string> wordList;
+    std::vector<std::string>& wordList;
     std::vector<std::string> wordsNow;
     std::vector<WordEntity> wordsOnScreen;
 
@@ -68,7 +68,7 @@ class GamePlay{
 
     void updateParams(const sf::Font& fontT,sf::Color wordColor,float spawnRate,int lives,int wordSize,int charSize,const bool& highlighted);
     void handleInput(const sf::Event& event);
-    void update(float dt,const sf::Event& event);
+    void update(float dt);
     void draw();
 
 

@@ -1,5 +1,5 @@
 #include "PauseMenu.hpp"
-#include "../Game.hpp"
+#include "../../Game.hpp"
 
 PauseMenu::PauseMenu(sf::RenderWindow &newWindow) : window(newWindow),
                                                     font(Game::getFont()),

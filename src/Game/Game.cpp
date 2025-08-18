@@ -12,13 +12,16 @@ Font Game::font = Font("../assets/fonts/Exo2-Regular.ttf");
 RenderWindow Game::window;
 bool Game::justExitedPause = false;
 bool Game::scoresOpen = true;
+bool Game::gameOverStatsRefresh = true;
 Color Game::bgColor = Color::Black;
+
 
 Game::Game() : mainMenu(window),
                gamePlay(window,wordList),
                configMenu(window,gamePlay),
                bestScoresMenu(window),
-               pauseMenu(window){
+               pauseMenu(window),
+               gameOver(window){
     run();
 }
 
@@ -42,6 +45,7 @@ void Game::run() {
     configMenu.init();
     gamePlay.init();
     pauseMenu.init();
+    gameOver.init();
     Clock clock;
     while (window.isOpen()) {
         float dt = clock.restart().asSeconds();
@@ -100,13 +104,10 @@ void Game::update(float dt) {
 
                 if (isPaused == IsPaused::Unpaused) {
                     gamePlay.handleInput(*event);
-                    if (state == GameState::GameOver) {
-                        /*gameOverScore.setString(gamePlay.getGameOverScore());
-                        gameOverWords.setString(gamePlay.getGameOverWords());
-                        gameOverLastWord.setString(gamePlay.getGameOverLastWord());*/
-                        gamePlay.reset();
-                    }
                 }
+            }
+            if (state == GameState::GameOver) {
+              gameOver.update(*event);
             }
         }
 
@@ -114,6 +115,12 @@ void Game::update(float dt) {
     //UPDATING GAMEPLAY WHENEVER EVENT EXISTS OR NOT
     //--PollEvent returns false if there is no event,but while state == gameplay we must update it every frame
 
+    if (state == GameState::GameOver) {
+        if (gameOverStatsRefresh) {
+            gameOverStatsRefresh = false;
+            setGameOverStats();
+        }
+    }
 
     if (state == GameState::Gameplay && isPaused == IsPaused::Unpaused) {
         gamePlay.update(dt);
@@ -151,6 +158,10 @@ void Game::draw() {
             }else if (isPaused == IsPaused::SettingsPaused) {
                 configMenu.draw();
             }
+            break;
+            case GameState::GameOver:
+            gameOver.draw();
+            break;
 
     }
 
@@ -174,6 +185,13 @@ void Game::draw() {
 
     window.display();
 }
+void Game::setGameOverStats() {
+    gameOver.setGameOverScore(gamePlay.getGameOverScore());
+    gameOver.setGameOverWords(gamePlay.getGameOverWords());
+    gameOver.setGameOverLastWord(gamePlay.getGameOverLastWord());
+    gamePlay.reset();
+}
+
 
 void Game::setState(GameState newState) {
     state = newState;

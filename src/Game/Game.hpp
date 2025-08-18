@@ -20,6 +20,7 @@
 #include "BestScoresMenu/BestScoresMenu.hpp"
 #include "ConfigMenu/ConfigMenu.hpp"
 #include "MainMenu/MainMenu.hpp"
+#include "GamePlay/GameOver/GameOver.hpp"
 
 
 class Game{
@@ -35,6 +36,8 @@ public:
     static sf::Color getColorButt();
     static sf::Color getHooverButt();
     static sf::Vector2f getButtSize();
+    void setGameOverStats();
+    static bool gameOverStatsRefresh;
     static bool scoresOpen;
     static sf::Color bgColor;
     static void changeBgColor(sf::Color newColor);
@@ -62,6 +65,7 @@ public:
     BestScoresMenu bestScoresMenu;
     PauseMenu pauseMenu;
     GamePlay gamePlay;
+    GameOver gameOver;
 
 };
 

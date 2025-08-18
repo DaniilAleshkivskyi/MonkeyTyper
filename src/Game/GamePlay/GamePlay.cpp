@@ -331,7 +331,6 @@ void GamePlay::updateWordSize(int newWordSize) {
 };
 
 std::string GamePlay::getGameOverScore() {
-
 return scoreText.getString();
 }
 

@@ -5,7 +5,7 @@
 #include <SFML/Graphics.hpp>
 #include <fmt/ostream.h>//for writing results
 
-#include "PauseMenu.hpp"
+#include "PauseMenu/PauseMenu.hpp"
 #include "../../GameStates/GameState.hpp"
 #include "../ConfigMenu/ConfigOption.hpp"
 #include "WordEntity.hpp"

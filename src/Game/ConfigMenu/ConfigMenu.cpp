@@ -235,6 +235,7 @@ void ConfigMenu::update(const sf::Event& event) {
 
                  if (Game::getState() != GameState::Settings && Game::isPaused != IsPaused::SettingsPaused) {
                      if (MouseIter::leftMousewasClicked(window,startButt)) {
+                         Game::gameOverStatsRefresh = true;
                          gamePlay.updateParams(font,wordsColor,wordSpawnNow,livesNow,wordSizeNow,charSizeNow,isHighlighted);
                          Game::setState(GameState::Gameplay);
                      }

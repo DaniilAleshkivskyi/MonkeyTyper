@@ -1,5 +1,5 @@
 #pragma once
-#include "../../GameStates/IGameState.hpp"
+#include "../../../GameStates/IGameState.hpp"
 
 class PauseMenu : public IGameState {
     public:

@@ -20,6 +20,7 @@ public:
     void draw() override;
     void update(const sf::Event& event) override;
     void init() override;
+    void setDefColor() override;
 
     std::string bestScoresPath;
 

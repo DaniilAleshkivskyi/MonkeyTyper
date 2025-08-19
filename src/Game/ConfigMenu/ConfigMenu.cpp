@@ -250,6 +250,7 @@ void ConfigMenu::draw() {
         opt.draw(window);
     }
 }
+void ConfigMenu::setDefColor() {}
 
 
 

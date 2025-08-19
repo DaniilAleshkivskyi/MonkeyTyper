@@ -98,6 +98,17 @@ void GameOver::draw() {
     }
 }
 
+void GameOver::setDefColor() {
+    for (int i = 0; i < vecButtGameOver.size(); ++i) {
+        auto& butt = vecButtGameOver[i];
+        auto& txt = vecTextGameOver[i];
+
+        butt.setFillColor(colorButt);
+        butt.setOutlineColor(hooverButt);
+        txt.setFillColor(hooverButt);
+    }
+}
+
 
 void GameOver::setGameOverScore(std::string score){
     gameOverScore.setString(score);

@@ -52,14 +52,17 @@ void PauseMenu::update(const sf::Event& event) {
 
         if (MouseIter::leftMousewasClicked(window,vecButtPause[0])) {
             Game::isPaused = IsPaused::Unpaused;
+            setDefColor();
         }
         if (MouseIter::leftMousewasClicked(window,vecButtPause[1])) {
             Game::isPaused = IsPaused::SettingsPaused;
+            setDefColor();
         }
         if (MouseIter::leftMousewasClicked(window,vecButtPause.back())) {
             Game::justExitedPause = true;
             Game::isPaused = IsPaused::Unpaused;
             Game::setState(GameState::MainMenu);
+            setDefColor();
         }
 
 }
@@ -70,6 +73,16 @@ void PauseMenu::draw() {
     }
     for (auto& text :vecTextPause ) {
         window.draw(text);
+    }
+}
+
+void PauseMenu::setDefColor() {
+    for (int i = 0; i < vecButtPause.size(); ++i) {
+        auto& butt = vecButtPause[i];
+        auto& txt = vecTextPause[i];
+        butt.setFillColor(colorButt);
+        butt.setOutlineColor(hooverButt);
+        txt.setFillColor(colorTxt);
     }
 }
 

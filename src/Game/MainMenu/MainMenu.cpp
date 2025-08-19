@@ -10,6 +10,7 @@ MainMenu::MainMenu(RenderWindow& win)
          colorTxtHoover(colorButt),
          buttSize(Game::getButtSize()),
          nameText(font, "Monkey Typer", 90),
+         monkeyTyper(monkeyTyperTexture),
          menuButtons{
              RectangleShape(buttSize),
              RectangleShape(buttSize),
@@ -25,6 +26,8 @@ MainMenu::MainMenu(RenderWindow& win)
 
 
 void MainMenu::init() {
+    nameText.setOutlineColor(colorButt);
+    nameText.setOutlineThickness(4);
     nameText.setFillColor(Color(255,221,178));
     nameText.setOrigin({nameText.getLocalBounds().size.x/2.f,nameText.getLocalBounds().size.y/2.f});
     nameText.setPosition(Vector2f(window.getSize().x/2.f,window.getSize().y/2.f- 300.f));
@@ -47,6 +50,9 @@ void MainMenu::init() {
     for (auto& vec_text: menuTexts) {
         vec_text.setFillColor(colorTxt);
     }
+
+    monkeyTyper.setPosition(nameText.getPosition());
+    /*monkeyTyper.setScale({0.9f, 0.95f});*/
 }
 
 
@@ -103,6 +109,20 @@ void MainMenu::draw(){
 
     for (auto& text :menuTexts) {
         window.draw(text);
+    }
+
+    window.draw(monkeyTyper);
+}
+
+
+void MainMenu::setDefColor() {
+    for (int i = 0; i < menuButtons.size(); ++i) {
+        auto& butt = menuButtons[i];
+        auto& txt = menuTexts[i];
+
+        butt.setFillColor(colorButt);
+        butt.setOutlineColor(hooverButt);
+        txt.setFillColor(colorTxt);
     }
 }
 

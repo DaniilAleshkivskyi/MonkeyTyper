@@ -71,11 +71,18 @@ void Game::update(float dt) {
                 mainMenu.update(*event);
             }
             if (state == GameState::BestScores) {
+                if (auto const e = event->getIf<Event::KeyPressed>())  {
+                    if (e->code == Keyboard::Key::Escape) {
+                        mainMenu.setDefColor();
+                        setState(GameState::MainMenu);
+                    }
+                }
                 bestScoresMenu.update(*event);
             }
             if ( state == GameState::ConfigurationMenu || state == GameState::Settings) {
                 if (auto const e = event->getIf<Event::KeyPressed>()) {
                     if (e->code == Keyboard::Key::Escape) {
+                        mainMenu.setDefColor();
                         state = GameState::MainMenu;
                     }
                 }
@@ -85,6 +92,7 @@ void Game::update(float dt) {
 
             if (state == GameState::Gameplay) {
                 if (isPaused == IsPaused::Paused) {
+                    pauseMenu.setDefColor();
                     pauseMenu.update(*event);
                 }
                 if (auto const e = event->getIf<Event::KeyPressed>()) {
@@ -107,6 +115,7 @@ void Game::update(float dt) {
                 }
             }
             if (state == GameState::GameOver) {
+              gameOver.setDefColor();
               gameOver.update(*event);
             }
         }
@@ -145,8 +154,8 @@ void Game::draw() {
         case GameState::ConfigurationMenu:
         case GameState::Settings:
 
-             configMenu.draw();
-             break;
+            configMenu.draw();
+            break;
 
         case GameState::Gameplay:
             if (isPaused != IsPaused::SettingsPaused) {
@@ -159,30 +168,10 @@ void Game::draw() {
                 configMenu.draw();
             }
             break;
-            case GameState::GameOver:
+        case GameState::GameOver:
             gameOver.draw();
             break;
-
     }
-
-    /*
-    if (state == GameState::GameOver) {
-        window.draw(gameOverOverlay);
-        window.draw(gameOverText);
-        window.draw(gameOverScore);
-        window.draw(gameOverWords);
-        window.draw(gameOverLastWord);
-        for (auto& shape :vecButtGameOver) {
-            window.draw(shape);
-        }
-        for (auto& text :vecTextGameOver ) {
-            window.draw(text);
-        }
-    }*/
-
-
-
-
     window.display();
 }
 void Game::setGameOverStats() {

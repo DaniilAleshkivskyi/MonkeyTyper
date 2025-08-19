@@ -8,6 +8,7 @@ public:
     void init() override;
     void update(const sf::Event &event) override;
     void draw() override;
+    void setDefColor();
     void setGameOverScore(std::string score);
     void setGameOverWords(std::string words);
     void setGameOverLastWord(std::string lastWord);

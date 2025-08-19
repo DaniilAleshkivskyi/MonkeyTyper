@@ -25,11 +25,6 @@ void BestScoresMenu::update(const sf::Event& event) {
                 bestScoresSearcher(bestScoresPath,bestScoresList,colorButt,colorTxt,bestScoresShapes,font,window,bestScoresText,bestScoresNum);
                 scoresOpen = false;
             }
-            if (auto const e = event.getIf<sf::Event::KeyPressed>()) {
-                if (e->code == sf::Keyboard::Key::Escape) {
-                    Game::setState(GameState::MainMenu);
-                }
-            }
 }
 void BestScoresMenu::draw() {
     if (bestScoresList.empty()) {
@@ -47,7 +42,7 @@ void BestScoresMenu::draw() {
     }
 }
 
-
+void BestScoresMenu::setDefColor() {}
 
 
 void BestScoresMenu::bestScoresSearcher(std::string &bestScoresPath,

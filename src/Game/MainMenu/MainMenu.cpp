@@ -28,7 +28,7 @@ MainMenu::MainMenu(RenderWindow& win)
 void MainMenu::init() {
     nameText.setOutlineColor(colorButt);
     nameText.setOutlineThickness(4);
-    nameText.setFillColor(Color(255,221,178));
+    nameText.setFillColor(colorTxt);
     nameText.setOrigin({nameText.getLocalBounds().size.x/2.f,nameText.getLocalBounds().size.y/2.f});
     nameText.setPosition(Vector2f(window.getSize().x/2.f,window.getSize().y/2.f- 300.f));
 

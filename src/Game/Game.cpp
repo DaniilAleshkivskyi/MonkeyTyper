@@ -2,9 +2,8 @@
 
 using namespace sf;
 
-Color Game::colorButt = Color(176, 48, 82);
-Color Game::hooverButt = Color(255,221,178);
-//size for buttons
+Color Game::colorButt = sf::Color (254, 216, 177);
+Color Game::hooverButt = sf::Color (166, 123, 91);
 Vector2f Game::buttSize = {400,50};
 GameState Game::state = GameState::MainMenu;
 IsPaused Game::isPaused = IsPaused::Unpaused;
@@ -66,7 +65,6 @@ void Game::update(float dt) {
                 if (justExitedPause) {
                     gamePlay.reset();
                     justExitedPause = false;
-                    break;
                 }
                 mainMenu.update(*event);
             }

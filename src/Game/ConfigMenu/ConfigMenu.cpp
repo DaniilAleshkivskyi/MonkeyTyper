@@ -9,27 +9,26 @@ ConfigMenu::ConfigMenu(sf::RenderWindow &win,GamePlay &gameplay):window(win),
                                               wordsColor(sf::Color::Black),
                                               isHighlighted(true),isClicked(false),
                                               charSizeMin(10),charSizeNow(30),charSizeMax(40),
-                                              defaultBackgroundColor(sf::Color(215, 108, 130)),
                                               labelTemplate(sf::Text(font,"",charSizeNow)),
                                               buttonTemplate({900,100}),
                                               wordSizeMin(1),wordSizeNow(3),wordSizeMax(10),
                                               livesMin(1),livesNow(3),livesMax(10),
                                               wordSpawnMin(0.2),wordSpawnNow(2),wordSpawnMax(10),
                                               colorMap{
-                                                  {"Default(Pink)", defaultBackgroundColor},
-                                                  {"Grey",sf::Color(169,169,169)},
+                                                  {"Test",sf::Color (111, 78, 55)},
+                                                  {"Default(Pink)", sf::Color(215, 108, 130)},
+                                                  {"Green",sf::Color(192, 199, 140)},
+                                                  {"Grey",sf::Color(254, 250, 224)},
                                                   {"Black", sf::Color::Black},
                                                   {"White", sf::Color::White},
                                                   {"Yellow", sf::Color::Yellow},
-                                                  {"Green",sf::Color::Green},
-                                                  {"Magenta",sf::Color::Magenta},
                                                   {"Red",sf::Color::Red}},
                                               startButt({300,100}),
                                               startText(font,"START",charSizeNow)
 
 
 {
-    Game::changeBgColor(colorMap["Default(Pink)"]);
+    Game::changeBgColor(colorMap["Test"]);
 
     if (!font2.openFromFile("../assets/fonts/DynaPuff-Regular.ttf")) {
         throw std::runtime_error("Could not open font2 file");
@@ -62,7 +61,7 @@ void ConfigMenu::init() {
 
      // ---------- Background color ----------
      labelTemplate.setString("Background Color");
-     configOptions.emplace_back(buttonTemplate, labelTemplate, colorMap.at("Default(Pink)"),colorMap,sf::Keyboard::Key::F9,sf::Keyboard::Key::F10,BgColor);
+     configOptions.emplace_back(buttonTemplate, labelTemplate, colorMap.at("Test"),colorMap,sf::Keyboard::Key::F9,sf::Keyboard::Key::F10,BgColor);
 
      // ---------- Word color ----------
      labelTemplate.setString("Words Color");

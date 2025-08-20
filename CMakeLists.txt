@@ -59,5 +59,9 @@ add_executable(MonkeyTyper main.cpp
         src/Game/GamePlay/PauseMenu/PauseMenu.hpp
         src/Game/GamePlay/GameOver/GameOver.cpp
         src/Game/GamePlay/GameOver/GameOver.hpp
+        src/helpers/ThemeChooser.cpp
+        src/helpers/ThemeChooser.hpp
+        src/helpers/Theme.cpp
+        src/helpers/Theme.hpp
 )
 target_link_libraries(MonkeyTyper PRIVATE SFML::Graphics fmt)

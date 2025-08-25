@@ -19,10 +19,13 @@ void BestScoresMenu::init() {
 
 
 void BestScoresMenu::update(const sf::Event& event) {
-            if (Game::scoresOpen) {
-                bestScoresSearcher(bestScoresPath,bestScoresList,colorButt,colorTxt,bestScoresShapes,font,window,bestScoresText,bestScoresNum);
-                Game::scoresOpen = false;
-            }
+    if (Game::scoresOpen) {
+        bestScoresSearcher(bestScoresPath,bestScoresList,colorButt,colorTxt,bestScoresShapes,font,window,bestScoresText,bestScoresNum);
+        Game::scoresOpen = false;
+    }
+    if (Game::themeChanged) {
+        changeColor();
+    }
 }
 void BestScoresMenu::draw() {
     if (bestScoresList.empty()) {
@@ -41,6 +44,19 @@ void BestScoresMenu::draw() {
 }
 
 void BestScoresMenu::setDefColor() {}
+
+void BestScoresMenu::changeColor() {
+    for (auto& shape :bestScoresShapes) {
+        shape.setFillColor(colorButt);
+        shape.setOutlineColor(colorTxt);
+    }
+    for (auto& text :bestScoresText) {
+        text.setFillColor(colorTxt);
+    }
+    for (auto& text :bestScoresNum) {
+        text.setFillColor(colorTxt);
+    }
+}
 
 
 void BestScoresMenu::bestScoresSearcher(std::string& bestScoresPath,

@@ -14,9 +14,8 @@ public:
 
     sf::RenderWindow& window;
     sf::Font& font;
-    sf::Color colorButt;
-    sf::Color colorNow;
-    sf::Color colorTxt;
+    sf::Color& colorButt;
+    sf::Color& colorTxt;
     void draw() override;
     void update(const sf::Event& event) override;
     void init() override;
@@ -25,7 +24,6 @@ public:
     std::string bestScoresPath;
 
     std::vector<int> bestScoresList;
-    bool scoresOpen;
     std::vector<sf::RectangleShape> bestScoresShapes;
     std::vector<sf::Text> bestScoresText;
     std::vector<sf::Text> bestScoresNum;

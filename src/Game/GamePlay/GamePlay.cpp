@@ -6,7 +6,6 @@ sf::RectangleShape GamePlay::interfaceBox;
 sf::Font GamePlay::fontT;
 float GamePlay::spawnRate;
 int GamePlay::cSize;
-sf::Color GamePlay::wordColor;
 sf::Text GamePlay::scoreText(fontT,"",cSize);
 int GamePlay::score = 0;
 int GamePlay::wordSize = 0;
@@ -14,12 +13,13 @@ int GamePlay::wordSize = 0;
 
 GamePlay::GamePlay(sf::RenderWindow& window,std::vector<std::string>& wordList)
     :window(window),
-wordList(wordList),
-userTextInput(fontT,"Lives 10",40),
-livesText(fontT,"",40),
-statsText(fontT,"Correctly typed words: " + std::to_string(wordsTyped),cSize),
-instr(fontT,"For cleaning input: \"Enter\"\nTo clean previous char: \"Backspace\"",cSize),
-txtInputBox(fontT,"INPUT",cSize){}
+    wordColor(Game::getHooverButt()),
+    wordList(wordList),
+    userTextInput(fontT,"Lives 10",40),
+    livesText(fontT,"",40),
+    statsText(fontT,"Correctly typed words: " + std::to_string(wordsTyped),cSize),
+    instr(fontT,"For cleaning input: \"Enter\"\nTo clean previous char: \"Backspace\"",cSize),
+    txtInputBox(fontT,"INPUT",cSize){}
 
 void GamePlay::init() {
 
@@ -73,9 +73,8 @@ void GamePlay::init() {
 
 
 
-void GamePlay::updateParams(const sf::Font &newFont, sf::Color newWordColor, float newSpawnRate, int newLives, int newWordSize, int newCharSize, const bool& newHighlighted) {
+void GamePlay::updateParams(const sf::Font &newFont, sf::Color& newWordColor, float newSpawnRate, int newLives, int newWordSize, int newCharSize, const bool& newHighlighted) {
     fontT = newFont;
-    wordColor = newWordColor;
     spawnRate = newSpawnRate;
     lives = newLives;
     wordSize = newWordSize;
@@ -200,6 +199,11 @@ void GamePlay::update(float dt) {
         wordsOnScreen.push_back(word);
 
         spawnClock.restart();
+    }
+
+    //coloring words if theme changed
+    for (WordEntity& word : wordsOnScreen) {
+        word.setColor(wordColor);
     }
 
 

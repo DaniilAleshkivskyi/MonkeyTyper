@@ -2,8 +2,8 @@
 
 using namespace sf;
 
-Color Game::colorButt = sf::Color (254, 216, 177);
-Color Game::hooverButt = sf::Color (166, 123, 91);
+Color Game::colorButt;
+Color Game::hooverButt;
 Vector2f Game::buttSize = {400,50};
 GameState Game::state = GameState::MainMenu;
 IsPaused Game::isPaused = IsPaused::Unpaused;
@@ -12,15 +12,16 @@ RenderWindow Game::window;
 bool Game::justExitedPause = false;
 bool Game::scoresOpen = true;
 bool Game::gameOverStatsRefresh = true;
+bool Game::themeChanged = false;
 Color Game::bgColor = Color::Black;
 
 
-Game::Game() : mainMenu(window),
-               gamePlay(window,wordList),
+Game::Game() : gamePlay(window,wordList),
                configMenu(window,gamePlay),
                bestScoresMenu(window),
                pauseMenu(window),
-               gameOver(window){
+               gameOver(window),
+               mainMenu(window){
     run();
 }
 
@@ -71,6 +72,7 @@ void Game::update(float dt) {
             if (state == GameState::BestScores) {
                 if (auto const e = event->getIf<Event::KeyPressed>())  {
                     if (e->code == Keyboard::Key::Escape) {
+                        scoresOpen = true;
                         mainMenu.setDefColor();
                         setState(GameState::MainMenu);
                     }
@@ -127,6 +129,7 @@ void Game::update(float dt) {
             gameOverStatsRefresh = false;
             setGameOverStats();
         }
+        gameOver.colorButts();
     }
 
     if (state == GameState::Gameplay && isPaused == IsPaused::Unpaused) {
@@ -192,10 +195,10 @@ void Game::setFont(Font& newFont) {
 RenderWindow& Game::getWindow() {
     return window;
 }
- Color Game::getColorButt() {
+ Color& Game::getColorButt() {
     return colorButt;
 }
-Color Game::getHooverButt() {
+Color& Game::getHooverButt() {
     return hooverButt;
 }
  Vector2f Game::getButtSize() {
@@ -204,6 +207,9 @@ Color Game::getHooverButt() {
 GameState Game::getState() {
     return state;
 }
-void Game::changeBgColor(Color newColor) {
-    bgColor = newColor;
+void Game::setTheme(Theme newTheme){
+    bgColor = newTheme.background;
+    colorButt = newTheme.colorButt;
+    hooverButt = newTheme.hooverButt;
+    themeChanged = true;
 }

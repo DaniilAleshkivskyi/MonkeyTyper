@@ -3,8 +3,7 @@
 
 PauseMenu::PauseMenu(sf::RenderWindow &newWindow) : window(newWindow),
                                                     font(Game::getFont()),
-                                                    colorButt(Game::colorButt),hooverButt(Game::hooverButt),
-                                                    colorTxt(hooverButt),hooverText(colorButt),
+                                                    colorButt(Game::getColorButt()),hooverButt(Game::getHooverButt()),
                                                     buttSize(Game::buttSize),charSizeButt(40),
                                                     vecButtPause{
                                                         sf::RectangleShape(buttSize),//0
@@ -27,7 +26,7 @@ void PauseMenu::init() {
         vecButt.setFillColor(colorButt);
     }
     for (auto& vecTxt: vecTextPause) {
-        vecTxt.setFillColor(colorTxt);
+        vecTxt.setFillColor(hooverButt);
     }
     //Centring butts
     CenterVecEnt::RectSetVecCentre(vecButtPause,window,25);
@@ -42,11 +41,11 @@ void PauseMenu::update(const sf::Event& event) {
             if (MouseIter::mouseHoover(window, butt)) {
                 butt.setFillColor(hooverButt);
                 butt.setOutlineColor(colorButt);
-                txt.setFillColor(hooverText);
+                txt.setFillColor(colorButt);
             } else {
                 butt.setFillColor(colorButt);
                 butt.setOutlineColor(hooverButt);
-                txt.setFillColor(colorTxt);
+                txt.setFillColor(hooverButt);
             }
         }
 
@@ -82,7 +81,7 @@ void PauseMenu::setDefColor() {
         auto& txt = vecTextPause[i];
         butt.setFillColor(colorButt);
         butt.setOutlineColor(hooverButt);
-        txt.setFillColor(colorTxt);
+        txt.setFillColor(hooverButt);
     }
 }
 

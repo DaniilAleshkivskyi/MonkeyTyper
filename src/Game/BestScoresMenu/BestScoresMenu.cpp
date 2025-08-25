@@ -2,12 +2,10 @@
 #include "../Game.hpp"
 
 
-
 BestScoresMenu::BestScoresMenu(sf::RenderWindow& win): window(win),
                                   font(Game::getFont()),
-                                  colorButt( Game::getColorButt()),
+                                  colorButt(Game::getColorButt()),
                                   colorTxt(Game::getHooverButt()),
-                                  scoresOpen(false),
                                   emptyScores(Game::getFont(),"NO SCORES FOUND :(",70),
                                   bestScoresPath("../saves/BestScores.txt") {}
 
@@ -21,9 +19,9 @@ void BestScoresMenu::init() {
 
 
 void BestScoresMenu::update(const sf::Event& event) {
-            if (scoresOpen) {
+            if (Game::scoresOpen) {
                 bestScoresSearcher(bestScoresPath,bestScoresList,colorButt,colorTxt,bestScoresShapes,font,window,bestScoresText,bestScoresNum);
-                scoresOpen = false;
+                Game::scoresOpen = false;
             }
 }
 void BestScoresMenu::draw() {
@@ -45,10 +43,10 @@ void BestScoresMenu::draw() {
 void BestScoresMenu::setDefColor() {}
 
 
-void BestScoresMenu::bestScoresSearcher(std::string &bestScoresPath,
+void BestScoresMenu::bestScoresSearcher(std::string& bestScoresPath,
                                         std::vector<int> &bestScoresList,
-                                        sf::Color &colorButt,
-                                        sf::Color &colorTxt,
+                                        sf::Color& colorButt,
+                                        sf::Color& colorTxt,
                                         std::vector<sf::RectangleShape> &bestScoresShapes,
                                         sf::Font &font,
                                         sf::RenderWindow &window,

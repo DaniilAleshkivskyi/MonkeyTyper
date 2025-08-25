@@ -13,13 +13,13 @@ class MainMenu : public IGameState{
     int charSizeButt = 40;
     sf::Font& font;
 
-    sf::Texture monkeyTyperTexture = sf::Texture( "../assets/pics/MonkeyIsTyping1.png");
+    sf::Texture monkeyTyperTexture = sf::Texture( "../assets/pics/MonkeyIsTyping2.png");
     sf::Sprite monkeyTyper;
-    sf::Color colorButt;
-    sf::Color hooverButt;
+    sf::Color& colorButt;
+    sf::Color& hooverButt;
     //color for our text
-    sf::Color colorTxt;
-    sf::Color colorTxtHoover;
+    sf::Color& colorTxt;
+    sf::Color& colorTxtHoover;
     //size for buttons
     sf::Vector2f buttSize;
     sf::Text nameText;

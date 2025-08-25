@@ -7,15 +7,13 @@ class PauseMenu : public IGameState {
     void init() override;
     void update(const sf::Event& event) override;
     void draw() override;
-    void setDefColor();
+    void setDefColor() override;
 
     sf::RenderWindow& window;
     sf::Vector2f buttSize;
     sf::Font& font;
-    sf::Color hooverButt;
-    sf::Color colorButt;
-    sf::Color hooverText;
-    sf::Color colorTxt;
+    sf::Color& hooverButt;
+    sf::Color& colorButt;
     int charSizeButt;
     //Overlay for pause
     sf::RectangleShape pauseOverlay;

@@ -5,7 +5,7 @@
 GameOver::GameOver(sf::RenderWindow& newWindow)
 :window(newWindow),font(Game::getFont()),buttSize(Game::buttSize),
 gameOverText(font,"GAME OVER",90),gameOverScore(font,"T",50),gameOverWords(font,"T",50),gameOverLastWord(font,"T",50),
-colorTxt(Game::hooverButt),hooverButt(Game::hooverButt),colorButt(Game::colorButt),
+hooverButt(Game::hooverButt),colorButt(Game::colorButt),
 vecButtGameOver{
     sf::RectangleShape(buttSize),//0
     sf::RectangleShape(buttSize),//1
@@ -22,19 +22,19 @@ void GameOver::init() {
     gameOverOverlay.setFillColor(sf::Color(0, 0, 0,140));
 
 
-    gameOverText.setFillColor(sf::Color(255,221,178));
+    gameOverText.setFillColor(hooverButt);
     gameOverText.setOrigin({gameOverText.getLocalBounds().size.x/2.f,gameOverText.getLocalBounds().size.y/2.f});
     gameOverText.setPosition(sf::Vector2f(window.getSize().x/2.f,window.getSize().y/2.f- 300.f));
 
-    gameOverScore.setFillColor(colorTxt);
+    gameOverScore.setFillColor(hooverButt);
     gameOverScore.setPosition({30, window.getSize().y/2.f });
 
 
-    gameOverWords.setFillColor(colorTxt);
+    gameOverWords.setFillColor(hooverButt);
     gameOverWords.setPosition({gameOverScore.getPosition().x,gameOverScore.getPosition().y + 60});
 
 
-    gameOverLastWord.setFillColor(colorTxt);
+    gameOverLastWord.setFillColor(hooverButt);
     gameOverLastWord.setPosition({gameOverWords.getPosition().x,gameOverWords.getPosition().y + 60});
 
 
@@ -45,7 +45,7 @@ void GameOver::init() {
     }
 
     for (auto& vec_txt: vecTextGameOver) {
-        vec_txt.setFillColor(colorTxt);
+        vec_txt.setFillColor(hooverButt);
     }
 
     CenterVecEnt::RectSetVecCentre(vecButtGameOver,window,25);
@@ -57,32 +57,36 @@ void GameOver::init() {
 void GameOver::update(const sf::Event& event) {
     if (MouseIter::leftMousewasClicked(window,vecButtGameOver[0])) {
             Game::setState(GameState::ConfigurationMenu);
-        }
-        if (MouseIter::leftMousewasClicked(window,vecButtGameOver[1])) {
-            Game::justExitedPause = true;
-            Game::setState(GameState::MainMenu);
-        }
-        if (MouseIter::leftMousewasClicked(window,vecButtGameOver.back())) {
-          window.close();
-        }
-
-
-
-        for (int i = 0; i < vecButtGameOver.size(); ++i) {
-            auto& butt = vecButtGameOver[i];
-            auto& txt = vecTextGameOver[i];
-
-            if (MouseIter::mouseHoover(window, butt)) {
-                butt.setFillColor(hooverButt);
-                butt.setOutlineColor(colorButt);
-                txt.setFillColor(colorButt);
-            } else {
-                butt.setFillColor(colorButt);
-                butt.setOutlineColor(hooverButt);
-                txt.setFillColor(hooverButt);
-            }
-        }
+    }
+    if (MouseIter::leftMousewasClicked(window,vecButtGameOver[1])) {
+        Game::justExitedPause = true;
+        Game::setState(GameState::MainMenu);
+    }
+    if (MouseIter::leftMousewasClicked(window,vecButtGameOver.back())) {
+        window.close();
+    }
 }
+
+void GameOver::colorButts() {
+    for (int i = 0; i < vecButtGameOver.size(); ++i) {
+        auto& butt = vecButtGameOver[i];
+        auto& txt = vecTextGameOver[i];
+
+        if (MouseIter::mouseHoover(window, butt)) {
+            butt.setFillColor(hooverButt);
+            butt.setOutlineColor(colorButt);
+            txt.setFillColor(colorButt);
+        } else {
+            butt.setFillColor(colorButt);
+            butt.setOutlineColor(hooverButt);
+            txt.setFillColor(hooverButt);
+        }
+    }
+    if (Game::themeChanged) {
+        gameOverText.setFillColor(hooverButt);
+    }
+}
+
 
 void GameOver::draw() {
     window.draw(gameOverOverlay);

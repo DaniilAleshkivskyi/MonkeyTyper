@@ -33,16 +33,17 @@ public:
     static void setFont(sf::Font& font);
     static sf::RenderWindow& getWindow();
 
-    static sf::Color getColorButt();
-    static sf::Color getHooverButt();
+    static sf::Color& getColorButt();
+    static sf::Color& getHooverButt();
     static sf::Vector2f getButtSize();
     void setGameOverStats();
     static bool gameOverStatsRefresh;
     static bool scoresOpen;
     static sf::Color bgColor;
-    static void changeBgColor(sf::Color newColor);
+    static void setTheme(Theme newTheme);
 
     static bool justExitedPause;
+    static bool themeChanged;
 
     //color for our butts
     static  sf::Color colorButt;

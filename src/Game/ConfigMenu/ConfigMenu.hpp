@@ -5,6 +5,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "ConfigOption.hpp"
+#include "../../helpers/Theme.hpp"
 #include "../GamePlay/GamePlay.hpp"
 
 class ConfigMenu : public IGameState {
@@ -14,7 +15,7 @@ class ConfigMenu : public IGameState {
     GamePlay& gamePlay;
     sf::Font& font;
     sf::Color wordsColor;
-    sf::Color defaultBackgroundColor;
+    sf::Color buttColl;
 
     void init() override;
     void update(const sf::Event& event) override;
@@ -52,7 +53,7 @@ class ConfigMenu : public IGameState {
 
 
     std::vector<ConfigOption> configOptions;
-    std::map<std::string, sf::Color> colorMap;
+    std::map<std::string,Theme> colorMap;
     std::map<std::string, sf::Font> fontMap;
     sf::RectangleShape buttonTemplate;
     sf::Text labelTemplate;

@@ -2,15 +2,15 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
+#include "../../helpers/Theme.hpp"
 #include <iomanip>//for float as float is like 2.0000000000000000 and we wanna do smth like 2.0
 
 enum ConfigOptionType {
-    Float,WordSize,Lives,BgColor,TxtColor,Bool,FontT,CSize
+    Float,WordSize,Lives,Themes,Bool,FontT,CSize
   };
 
 class ConfigOption {
     public:
-
 
     sf::RectangleShape button;
     sf::Text label;
@@ -27,9 +27,11 @@ class ConfigOption {
 
     bool boolValue = false;
 
-    static sf::Color colorValue;
-    sf::Color bgColor;
-    std::map<std::string, sf::Color> colorMap;
+    static std::string themeName;
+    static sf::Color bgColor;
+    static sf::Color colorButt;
+    static sf::Color hooverButt;
+    std::map<std::string,Theme> colorMap;
 
     static int cSizeVal;
 
@@ -64,8 +66,8 @@ class ConfigOption {
     //BOOL VALUES
     ConfigOption( sf::RectangleShape& button,const sf::Text& label,const bool& boolValue,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc);
 
-    //COLOR VALUES
-    ConfigOption( sf::RectangleShape& button,const sf::Text& label,const sf::Color& colorValue,const std::map<std::string, sf::Color>& colorMap,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc,ConfigOptionType cOT);
+    //THEME
+    ConfigOption( sf::RectangleShape& button,const sf::Text& label,const std::map<std::string,Theme>& colorMap,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc,ConfigOptionType cOT);
 
     //FONT
     ConfigOption( sf::RectangleShape& button,sf::Text& label,const sf::Font& font,const std::map<std::string, sf::Font>& fontMap ,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc);
@@ -87,10 +89,9 @@ class ConfigOption {
     void updateCSize();
     int getCSizeVal();
 
-    sf::Color nextColor();
-    sf::Color prevColor();
-    void updateColorValue(const sf::Color& newValue);
-    sf::Color getColorValue() const;
+    Theme nextTheme();
+    Theme prevTheme();
+    void changeThemeColor();
 
     void draw(sf::RenderWindow& window) const;
 

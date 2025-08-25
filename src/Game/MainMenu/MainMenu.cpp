@@ -1,6 +1,8 @@
 #include "MainMenu.hpp"
 #include "../Game.hpp"
 using namespace sf;
+
+
 MainMenu::MainMenu(RenderWindow& win)
        : font(Game::getFont()),
          window(win),
@@ -89,6 +91,11 @@ void MainMenu::init() {
                          butt.setOutlineColor(hooverButt);
                          txt.setFillColor(colorTxt);
                      }
+                 }
+                 if (Game::themeChanged) {
+                     nameText.setOutlineColor(colorButt);
+                     nameText.setFillColor(colorTxt);
+                     Game::themeChanged = false;
                  }
 
 

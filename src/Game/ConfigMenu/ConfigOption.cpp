@@ -1,14 +1,21 @@
 #include "ConfigOption.hpp"
 
+#include <iostream>
+
 
 std::pair<sf::RectangleShape, sf::Text> createButton(const sf::Font& font, const std::string& txt);
 std::string ConfigOption::fontName;
 sf::Font ConfigOption::fontValue;
-sf::Color ConfigOption::colorValue;
+
+
 float  ConfigOption::floatValue = 0;
 float  ConfigOption::minFloatVal = 0;
 float  ConfigOption::maxFloatVal = 0;
 int ConfigOption::cSizeVal = 30;
+sf::Color ConfigOption::hooverButt;
+sf::Color ConfigOption::bgColor;
+sf::Color ConfigOption::colorButt;
+std::string ConfigOption::themeName;
 
 
 
@@ -48,20 +55,12 @@ ConfigOption::ConfigOption( sf::RectangleShape& button,const sf::Text& label,con
 
 
 
-//BG COLOR/TXT COLOR
-ConfigOption::ConfigOption( sf::RectangleShape& button,const sf::Text& label,const sf::Color& newColorValue,const std::map<std::string, sf::Color>& colorMap,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc,ConfigOptionType cOT)
-:button(button), label(label),value(fontValue, "", cSizeVal),colorMap(colorMap),keyDec(keyDec),keyDecB(createButton(fontValue, "Decrease\n\t\"" + getDescription(delocalize(keyDec))+ "\"")),keyInc(keyInc),keyIncB(createButton(fontValue, "Increase\n\t\"" + getDescription(delocalize(keyInc))+ "\"")),configOptionType(cOT),leftButton(createButton(fontValue, "<")),rightButton(createButton(fontValue, ">")) {
-
-    if (cOT == TxtColor) {
-        colorValue = newColorValue;
-    }else if (cOT == BgColor) {
-        bgColor = newColorValue;
-    }
-
+//THEME
+ConfigOption::ConfigOption( sf::RectangleShape& button,const sf::Text& label,const std::map<std::string,Theme>& newColorMap,sf::Keyboard::Key keyDec,sf::Keyboard::Key keyInc,ConfigOptionType cOT)
+:button(button), label(label),colorMap(newColorMap),value(fontValue, "", cSizeVal),keyDec(keyDec),keyDecB(createButton(fontValue, "Decrease\n\t\"" + getDescription(delocalize(keyDec))+ "\"")),keyInc(keyInc),keyIncB(createButton(fontValue, "Increase\n\t\"" + getDescription(delocalize(keyInc))+ "\"")),configOptionType(cOT),leftButton(createButton(fontValue, "<")),rightButton(createButton(fontValue, ">")) {
+    value.setString("PINK");
     setRectColor();
     update();
-
-
 };
 
 //FONT
@@ -151,51 +150,34 @@ int ConfigOption::getCSizeVal() {
     return cSizeVal;
 }
 
-
-void ConfigOption::updateColorValue(const sf::Color& newValue) {
-    if (configOptionType == TxtColor) {
-        colorValue = newValue;
-    } else if(configOptionType == BgColor) {
-        bgColor = newValue;
-    }
-    update();
-}
-
-sf::Color ConfigOption::nextColor() {
-    auto it = colorMap.begin();
-    sf::Color& current = (configOptionType == TxtColor) ? colorValue : bgColor;
-    for ( it;it != colorMap.end(); ++it) {
-        if ((*it).second == current) {
-            ++it;
-            break;
-        }
-    }
+Theme ConfigOption::nextTheme() {
+    auto it = colorMap.find(themeName);
     if (it == colorMap.end()) {
         it = colorMap.begin();
-    }
-    updateColorValue((*it).second);
-    return (*it).second;
-}
-
-sf::Color ConfigOption::prevColor() {
-    auto it = colorMap.begin();
-    sf::Color& current = (configOptionType == TxtColor) ? colorValue : bgColor;
-    for ( it;it != colorMap.end(); ++it) {
-        if ((*it).second == current) {
-            if (it == colorMap.begin()) {
-                it = colorMap.end();
-            }
-            --it;
-            break;
+    }else{
+        ++it;
+        if (it == colorMap.end()) {
+            it = colorMap.begin();
         }
     }
-    updateColorValue((*it).second);
-    return (*it).second;
+
+    themeName = it->first;
+    hooverButt = it->second.hooverButt;
+    colorButt = it->second.colorButt;
+    return it->second;
 }
 
+Theme ConfigOption::prevTheme() {
+    auto it = colorMap.find(themeName);
+    if (it == colorMap.begin()) {
+        it = colorMap.end();
+    }
+    --it;
 
-sf::Color ConfigOption::getColorValue() const {
-    return (configOptionType == TxtColor) ? colorValue : bgColor;
+    themeName = it->first;
+    hooverButt = it->second.hooverButt;
+    colorButt = it->second.colorButt;
+    return it->second;
 }
 
 
@@ -268,68 +250,74 @@ std::pair<sf::RectangleShape, sf::Text> createButton(const sf::Font& font, const
 }
 
 
-
-
-
 void ConfigOption::setRectColor() {
     button.setFillColor(sf::Color(0,0,0,40));
     button.setOutlineColor(sf::Color::Black);
     button.setOutlineThickness(2);
 }
 
+void ConfigOption::changeThemeColor() {
+        label.setFillColor(hooverButt);
+        value.setFillColor(hooverButt);
+
+        keyDecB.first.setFillColor(colorButt);
+        keyDecB.first.setOutlineColor(hooverButt);
+        keyDecB.second.setFillColor(hooverButt);
+        leftButton.second.setFillColor(hooverButt);
+
+
+        button.setFillColor(colorButt);
+        button.setOutlineColor(hooverButt);
+
+        keyIncB.first.setFillColor(colorButt);
+        keyIncB.first.setOutlineColor(hooverButt);
+        keyIncB.second.setFillColor(hooverButt);
+        rightButton.second.setFillColor(hooverButt);
+}
+
 
 void ConfigOption::update() {
     updateCSize();
     updateFont();
+    changeThemeColor();
+
     switch (configOptionType) {
         case Lives:
         case WordSize:
         {
-            label.setFillColor(colorValue);
             value.setString(std::to_string(intValue));
-            value.setFillColor(colorValue);
             break;
         }
         case CSize: {
-            label.setFillColor(colorValue);
             value.setString(std::to_string(cSizeVal));
-            value.setFillColor(colorValue);
             break;
         }
         case Float: {
-            label.setFillColor(colorValue);
             std::ostringstream floatToString;
             floatToString << std::fixed << std::setprecision(1) << floatValue;
             value.setString(floatToString.str());
-            value.setFillColor(colorValue);
             break;
         }
         case Bool: {
             value.setString(boolValue ? "ON" : "OFF");
-            label.setFillColor(colorValue);
-            value.setFillColor(colorValue);
             break;
 
         }
-        case TxtColor:
-        case BgColor : {
-
-            sf::Color activeColor = getColorValue();
+        case Themes: {
             for (const auto& [name, col] : colorMap) {
-                if (col == activeColor) {
+                if (name == themeName) {
+                    bgColor = col.background;
+                    colorButt = col.colorButt;
+                    hooverButt = col.hooverButt;
                     value.setString(name);
-                    label.setFillColor(colorValue);
-                    value.setFillColor(colorValue);
+                    changeThemeColor();
                     return;
                 }
             }
            break;
         }
         case FontT: {
-
-            label.setFillColor(colorValue);
             value.setString(fontName);
-            value.setFillColor(colorValue);
             break;
         }
     }

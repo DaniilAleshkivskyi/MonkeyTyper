@@ -24,7 +24,7 @@ class GamePlay{
 
 
     static sf::Font fontT;
-    static sf::Color wordColor;
+    sf::Color& wordColor;
     static float spawnRate;
     int lives = 3;
     static int cSize;
@@ -66,7 +66,7 @@ class GamePlay{
 
 
 
-    void updateParams(const sf::Font& fontT,sf::Color wordColor,float spawnRate,int lives,int wordSize,int charSize,const bool& highlighted);
+    void updateParams(const sf::Font& fontT,sf::Color& wordColor,float spawnRate,int lives,int wordSize,int charSize,const bool& highlighted);
     void handleInput(const sf::Event& event);
     void update(float dt);
     void draw();

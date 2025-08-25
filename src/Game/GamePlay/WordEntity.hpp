@@ -6,9 +6,7 @@ class WordEntity {
     sf::Text text;
     std::string fullWord;
 
-
-    static sf::Font fontT;
-    static sf::Color colorT;
+    static sf::Color txtColor;
     static int charSize;
     static bool isHighlighted;
 
@@ -21,8 +19,9 @@ class WordEntity {
 
 
 public:
-    WordEntity(const std::string& word, const sf::Font& font, int charSizeC, sf::Color color, sf::Vector2f pos, float moveSpeed,bool highlight);
+    WordEntity(const std::string& word, const sf::Font& font, int charSizeC, sf::Color& color, sf::Vector2f pos, float moveSpeed,bool highlight);
     static void clearTypedPart();
+    void setColor(sf::Color& color);
     static void setTypedPart(const std::string& typedTxt);
     std::string getFullWord() const;
     sf::Text& getText();

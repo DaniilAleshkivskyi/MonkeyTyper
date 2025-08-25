@@ -2,17 +2,17 @@
 
 #include "fmt/compile.h"
 
-sf::Font WordEntity::fontT;
+sf::Color WordEntity::txtColor;
 std::string WordEntity::typedPart;
 int WordEntity::charSize;
-sf::Color WordEntity::colorT;
 bool WordEntity::isHighlighted;
 
 
-WordEntity::WordEntity(const std::string& word, const sf::Font& font, int charSizeC, sf::Color color, sf::Vector2f pos, float moveSpeed,bool highlight)
+WordEntity::WordEntity(const std::string& word, const sf::Font& font, int charSizeC, sf::Color& color, sf::Vector2f pos, float moveSpeed,bool highlight)
     : text(font,word,charSizeC),fullWord(word), speed(moveSpeed), position(pos),highlightText(font,"",charSizeC){
+    txtColor = color;
 
-    text.setFillColor(color);
+    text.setFillColor(txtColor);
     text.setPosition(pos);
 
     isHighlighted = highlight;
@@ -63,8 +63,9 @@ float WordEntity::getSpeed() const {
     return speed;
 }
 
-
-
+void WordEntity::setColor(sf::Color& color) {
+    text.setFillColor(color);
+}
 
 bool WordEntity::isFullyTyped() const {
     return typedPart == fullWord;

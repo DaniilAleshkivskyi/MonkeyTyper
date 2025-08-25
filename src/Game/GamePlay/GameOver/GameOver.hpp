@@ -8,16 +8,16 @@ public:
     void init() override;
     void update(const sf::Event &event) override;
     void draw() override;
-    void setDefColor();
+    void setDefColor() override;
+    void colorButts();
     void setGameOverScore(std::string score);
     void setGameOverWords(std::string words);
     void setGameOverLastWord(std::string lastWord);
 
     sf::RenderWindow& window;
     sf::Font& font;
-    sf::Color colorTxt;
-    sf::Color hooverButt;
-    sf::Color colorButt;
+    sf::Color& hooverButt;
+    sf::Color& colorButt;
     sf::RectangleShape gameOverOverlay;
     sf::Vector2f buttSize;
 

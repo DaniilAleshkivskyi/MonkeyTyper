@@ -24,7 +24,8 @@ class GamePlay{
 
 
     static sf::Font fontT;
-    sf::Color& wordColor;
+    sf::Color& colorTxt;
+    sf::Color& colorTxtHoover;
     static float spawnRate;
     int lives = 3;
     static int cSize;
@@ -69,10 +70,11 @@ class GamePlay{
     void updateParams(const sf::Font& fontT,sf::Color& wordColor,float spawnRate,int lives,int wordSize,int charSize,const bool& highlighted);
     void handleInput(const sf::Event& event);
     void update(float dt);
-    void draw();
+    void draw() const;
+    void themeChanged();
 
 
-    void scoreCounter(std::string word,float spRate);
+    static void scoreCounter(std::string word,float spRate);
 
 
     void reset();
@@ -87,17 +89,20 @@ class GamePlay{
 
     //UPDATING FOR EACH PARAM
     void updateFont(const sf::Font& newFont);
-    void updateWordColor(sf::Color newColor);
-    void updateSpawnRate(float newSpawnRate);
+    void updateColors(sf::Color newWColor,sf::Color newWHColor) const;
+
+    static void updateSpawnRate(float newSpawnRate);
     void updateLives(int newLives);
-    int  livesValueChanged();
-    void updateCSize(int newCSize);
+    int  livesValueChanged() const;
+
+    static void updateCSize(int newCSize);
     void updateHighlight(bool newHighlight);
     void updateWordSize(int newWordSize);
+    void macCheck();
 
 
-    std::string getGameOverScore();
-    std::string getGameOverWords();
-    std::string getGameOverLastWord();
+    static std::string getGameOverScore();
+    std::string getGameOverWords() const;
+    std::string getGameOverLastWord() const;
 };
 

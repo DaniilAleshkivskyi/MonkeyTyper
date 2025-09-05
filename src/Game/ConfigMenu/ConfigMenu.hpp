@@ -21,6 +21,7 @@ class ConfigMenu : public IGameState {
     void update(const sf::Event& event) override;
     void draw() override;
     void setDefColor() override;
+    void setTxtCenter() override;
 
     sf::RenderWindow& window;
 

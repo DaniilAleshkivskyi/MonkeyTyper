@@ -45,7 +45,7 @@ void MainMenu::init() {
     CenterVecEnt::RectSetVecCentre(menuButtons,window,25);
 
     //centring Text in butts with CenterVecEnt
-    CenterVecEnt::RectSpTextCentre(menuTexts,menuButtons,window);
+    setTxtCenter();
 
 
     //Coloring Text
@@ -131,6 +131,12 @@ void MainMenu::setDefColor() {
         butt.setOutlineColor(hooverButt);
         txt.setFillColor(colorTxt);
     }
+}
+
+void MainMenu::setTxtCenter() {
+    CenterVecEnt::RectSpTextCentre(menuTexts,menuButtons,window);
+    nameText.setOrigin({nameText.getLocalBounds().size.x/2.f,nameText.getLocalBounds().size.y/2.f});
+    nameText.setPosition(Vector2f(window.getSize().x/2.f,window.getSize().y/2.f- 300.f));
 }
 
 

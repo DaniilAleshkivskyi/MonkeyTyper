@@ -31,6 +31,7 @@ class MainMenu : public IGameState{
     void draw() override;
     void update(const sf::Event& event) override;
     void setDefColor() override;
+    void setTxtCenter() override;
 private:
 
 

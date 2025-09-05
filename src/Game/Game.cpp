@@ -13,6 +13,7 @@ bool Game::justExitedPause = false;
 bool Game::scoresOpen = true;
 bool Game::gameOverStatsRefresh = true;
 bool Game::themeChanged = false;
+bool Game::fontChanged = false;
 Color Game::bgColor = Color::Black;
 
 
@@ -134,6 +135,17 @@ void Game::update(float dt) {
 
     if (state == GameState::Gameplay && isPaused == IsPaused::Unpaused) {
         gamePlay.update(dt);
+    }else if (state == GameState::Gameplay && isPaused == IsPaused::Paused && themeChanged == true) {
+        gamePlay.themeChanged();
+    }
+
+    if (fontChanged) {
+        mainMenu.setTxtCenter();
+        configMenu.setTxtCenter();
+        bestScoresMenu.setTxtCenter();
+        pauseMenu.setTxtCenter();
+        gameOver.setTxtCenter();
+        fontChanged = false;
     }
 
 }
@@ -190,6 +202,7 @@ Font& Game::getFont() {
     return font;
 }
 void Game::setFont(Font& newFont) {
+    fontChanged = true;
     font = newFont;
 }
 RenderWindow& Game::getWindow() {

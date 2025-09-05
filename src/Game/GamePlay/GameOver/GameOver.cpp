@@ -112,14 +112,19 @@ void GameOver::setDefColor() {
         txt.setFillColor(hooverButt);
     }
 }
+void GameOver::setTxtCenter() {
+    CenterVecEnt::RectSpTextCentre(vecTextGameOver,vecButtGameOver,window);
+    gameOverText.setOrigin({gameOverText.getLocalBounds().size.x/2.f,gameOverText.getLocalBounds().size.y/2.f});
+    gameOverText.setPosition(sf::Vector2f(window.getSize().x/2.f,window.getSize().y/2.f- 300.f));
+}
 
 
-void GameOver::setGameOverScore(std::string score){
+void GameOver::setGameOverScore(const std::string &score){
     gameOverScore.setString(score);
 }
-void GameOver::setGameOverWords(std::string words) {
+void GameOver::setGameOverWords(const std::string &words) {
     gameOverWords.setString(words);
 }
-void GameOver::setGameOverLastWord(std::string lastWord) {
+void GameOver::setGameOverLastWord(const std::string &lastWord) {
     gameOverLastWord.setString(lastWord);
 }

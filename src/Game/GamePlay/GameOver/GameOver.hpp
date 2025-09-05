@@ -9,10 +9,11 @@ public:
     void update(const sf::Event &event) override;
     void draw() override;
     void setDefColor() override;
+    void setTxtCenter() override;
     void colorButts();
-    void setGameOverScore(std::string score);
-    void setGameOverWords(std::string words);
-    void setGameOverLastWord(std::string lastWord);
+    void setGameOverScore(const std::string &score);
+    void setGameOverWords(const std::string &words);
+    void setGameOverLastWord(const std::string &lastWord);
 
     sf::RenderWindow& window;
     sf::Font& font;

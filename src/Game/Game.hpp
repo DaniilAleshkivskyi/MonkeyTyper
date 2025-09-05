@@ -44,6 +44,7 @@ public:
 
     static bool justExitedPause;
     static bool themeChanged;
+    static bool fontChanged;
 
     //color for our butts
     static  sf::Color colorButt;

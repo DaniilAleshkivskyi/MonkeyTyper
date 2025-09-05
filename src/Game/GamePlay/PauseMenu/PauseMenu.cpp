@@ -85,6 +85,10 @@ void PauseMenu::setDefColor() {
     }
 }
 
+void PauseMenu::setTxtCenter() {
+    CenterVecEnt::RectSpTextCentre(vecTextPause,vecButtPause,window);
+}
+
 
 
 

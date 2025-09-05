@@ -13,7 +13,8 @@ int GamePlay::wordSize = 0;
 
 GamePlay::GamePlay(sf::RenderWindow& window,std::vector<std::string>& wordList)
     :window(window),
-    wordColor(Game::getHooverButt()),
+    colorTxt(Game::getHooverButt()),
+    colorTxtHoover(Game::getColorButt()),
     wordList(wordList),
     userTextInput(fontT,"Lives 10",40),
     livesText(fontT,"",40),
@@ -32,43 +33,21 @@ void GamePlay::init() {
     //INTERFACE BAR
     interfaceBox.setSize({(float)window.getSize().x,  300.f});
     interfaceBox.setPosition({0, window.getSize().y - interfaceBox.getSize().y});
-    interfaceBox.setFillColor(sf::Color(0,0,0,40));
-    interfaceBox.setOutlineColor(sf::Color::Black);
     interfaceBox.setOutlineThickness(2.f);
 
-
-
-    userTextInputBox.setFillColor(sf::Color(0,0,0,40));
-    userTextInputBox.setOutlineColor(sf::Color::Black);
     userTextInputBox.setOutlineThickness(2);
     userTextInputBox.setSize({600,100});
     userTextInputBox.setPosition({interfaceBox.getPosition().x + interfaceBox.getSize().x/2.f, interfaceBox.getPosition().y + interfaceBox.getSize().y/2.f});
 
-
-
-
     //USER INPUT
     userTextInput.setOrigin({userTextInput.getLocalBounds().size.x/2.f , userTextInput.getLocalBounds().size.y/2.f});
     userTextInput.setPosition({userTextInputBox.getPosition().x + 20, userTextInputBox.getPosition().y + userTextInputBox.getSize().y/4.f});
-    userTextInput.setFillColor(sf::Color::Black);
-
 
     livesText.setPosition({interfaceBox.getGlobalBounds().position.x + 10, interfaceBox.getGlobalBounds().position.y + 30});
-    livesText.setFillColor(sf::Color::Black);
-
 
     statsText.setPosition({livesText.getPosition().x,livesText.getPosition().y + 70});
-    statsText.setFillColor(sf::Color::Black);
-
 
     instr.setPosition({livesText.getPosition().x,statsText.getPosition().y + 70});
-    instr.setFillColor(sf::Color::Black);
-
-    #if defined(__APPLE__) && defined(__MACH__)
-    instr.setString("For cleaning input: \"Return\"\nTo clean previous char: \"Delete\"");
-    #endif
-
-
 }
 
 
@@ -83,7 +62,7 @@ void GamePlay::updateParams(const sf::Font &newFont, sf::Color& newWordColor, fl
     highlight = newHighlighted;
     livesText.setCharacterSize(cSize);
     livesText.setFont(fontT);
-    livesText.setString("Lives " + std::to_string(lives));
+    livesText.setString("Lives: " + std::to_string(lives));
 
 
     statsText.setFont(fontT);
@@ -97,16 +76,16 @@ void GamePlay::updateParams(const sf::Font &newFont, sf::Color& newWordColor, fl
     txtInputBox.setCharacterSize(cSize);
     txtInputBox.setOrigin(txtInputBox.getLocalBounds().position + txtInputBox.getLocalBounds().size / 2.f);
     txtInputBox.setPosition({userTextInputBox.getPosition().x + userTextInputBox.getSize().x/2.f,userTextInputBox.getPosition().y - 30});
-    txtInputBox.setFillColor(sf::Color::Black);
 
 
 
     scoreText.setFont(fontT);
     scoreText.setCharacterSize(40);
-    scoreText.setFillColor(sf::Color::Black);
     scoreText.setString("Score: 0");
     scoreText.setOrigin( scoreText.getLocalBounds().position +  scoreText.getLocalBounds().size / 2.f);
     scoreText.setPosition({window.getPosition().x + window.getSize().x/2.f,30});
+    macCheck();
+    themeChanged();
 }
 
 
@@ -183,7 +162,7 @@ void GamePlay::reset() {
 
 
 //CLASS FOR UPDATING GAMEPLAY,DETAILS DOWNSIDE
-void GamePlay::update(float dt) {
+void GamePlay::update(const float dt) {
     //SETTING INPUT STR
     userTextInput.setString(userInput);
     WordEntity::setTypedPart(userInput);
@@ -195,15 +174,14 @@ void GamePlay::update(float dt) {
         float y = rand() % (int)(window.getSize().y - interfaceBox.getSize().y - 110) + 60 ;//60 - for upper bound, in rand -50 for interface bound
         float speed = rand() % 150 + 100;
 
-        WordEntity word(chosenWord, fontT, cSize, wordColor, {0.f, y}, speed,highlight);
+        WordEntity word(chosenWord, fontT, cSize, colorTxt, {0.f, y}, speed,highlight);
         wordsOnScreen.push_back(word);
 
         spawnClock.restart();
     }
-
-    //coloring words if theme changed
-    for (WordEntity& word : wordsOnScreen) {
-        word.setColor(wordColor);
+    //coloring everything if theme changed
+    if (Game::themeChanged) {
+      themeChanged();
     }
 
 
@@ -257,16 +235,16 @@ void GamePlay::update(float dt) {
 
 
 //DRAWING
-void GamePlay::draw() {
-    window.draw(livesText);
-    window.draw(userTextInput);
-    window.draw(userTextInputBox);
+void GamePlay::draw() const {
     window.draw(deadLine);
     window.draw(interfaceBox);
+    window.draw(userTextInputBox);
+    window.draw(txtInputBox);
+    window.draw(userTextInput);
     window.draw(scoreText);
     window.draw(statsText);
     window.draw(instr);
-    window.draw(txtInputBox);
+    window.draw(livesText);
     for (const auto& word : wordsOnScreen) {
         window.draw(word.getText());
         if (highlight) {
@@ -280,7 +258,7 @@ void GamePlay::draw() {
 //REWRITING ARRAY OF WORDS WITH SIZES THAT WERE CHOSEN
 void GamePlay::getWordsFull(const int value){
     wordsNow.clear();
-    for (auto word : wordList) {
+    for (const auto& word : wordList) {
         if (word.length() == value) {
             wordsNow.push_back(word);
         }
@@ -288,7 +266,7 @@ void GamePlay::getWordsFull(const int value){
 }
 
 //SCORE COUNTER
-void GamePlay::scoreCounter(std::string word,float spRate) {
+void GamePlay::scoreCounter(std::string word, const float spRate) {
     int wordLength = word.length();
     int multiplier = 0;
     if (spRate >= 5) {
@@ -308,28 +286,28 @@ void  GamePlay::updateFont(const sf::Font& newFont) {
     fontT = newFont;
     newFontOutOfBorders();
 };
-void  GamePlay::updateWordColor(sf::Color newColor) {
-    wordColor = newColor;
+void  GamePlay::updateColors(const sf::Color newWColor, const sf::Color newWHColor) const {
+    colorTxt = newWColor;
+    colorTxtHoover = newWHColor;
 };
-void  GamePlay::updateSpawnRate(float newSpawnRate) {
+void  GamePlay::updateSpawnRate(const float newSpawnRate) {
     spawnRate = newSpawnRate;
 };
-void  GamePlay::updateLives(int newLives) {
+void  GamePlay::updateLives(const int newLives) {
     lives = newLives;
     livesText.setString("Lives: " + std::to_string(lives));
 };
 
-int GamePlay::livesValueChanged() {
-    std::cout<<"livesValueChanged : "<< lives <<std::endl;
+int GamePlay::livesValueChanged() const {
     return lives;
 };
-void  GamePlay::updateCSize(int newCSize) {
+void  GamePlay::updateCSize(const int newCSize) {
     cSize = newCSize;
 };
-void  GamePlay::updateHighlight(bool newHighlight) {
+void  GamePlay::updateHighlight(const bool newHighlight) {
     highlight = newHighlight;
 };
-void GamePlay::updateWordSize(int newWordSize) {
+void GamePlay::updateWordSize(const int newWordSize) {
     wordSize = newWordSize;
     getWordsFull(newWordSize);
 };
@@ -338,14 +316,44 @@ std::string GamePlay::getGameOverScore() {
 return scoreText.getString();
 }
 
-std::string GamePlay::getGameOverWords() {
+std::string GamePlay::getGameOverWords() const {
 return statsText.getString();
 };
-std::string GamePlay::getGameOverLastWord() {
-    if (lastWord == "") {
+std::string GamePlay::getGameOverLastWord() const {
+    if (lastWord.empty()) {
         return "Last word: none:(";
     }else{
         return "Last word: " + lastWord;
     }
 };
+void GamePlay::themeChanged() {
+    for (WordEntity& word : wordsOnScreen) {
+        word.setColor(colorTxt);
+    }
+
+    interfaceBox.setFillColor(colorTxtHoover);
+    interfaceBox.setOutlineColor(colorTxt);
+
+    userTextInputBox.setFillColor(colorTxtHoover);
+    userTextInputBox.setOutlineColor(colorTxt);
+
+    userTextInput.setFillColor(colorTxt);
+
+    livesText.setFillColor(colorTxt);
+
+    statsText.setFillColor(colorTxt);
+
+    instr.setFillColor(colorTxt);
+
+    txtInputBox.setFillColor(colorTxt);
+
+    scoreText.setFillColor(colorTxt);
+}
+
+void GamePlay::macCheck() {
+#if defined(__APPLE__) && defined(__MACH__)
+    instr.setString("For cleaning input: \"Return\"\nTo clean previous char: \"Delete\"");
+    scoreText.setPosition({window.getPosition().x + window.getSize().x/2.f,50});
+#endif
+}
 

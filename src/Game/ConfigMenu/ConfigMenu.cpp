@@ -1,8 +1,6 @@
 #include "ConfigMenu.hpp"
 #include "../Game.hpp"
 
-
-
 ConfigMenu::ConfigMenu(sf::RenderWindow &win,GamePlay &gameplay):window(win),
                                               gamePlay(gameplay),
                                               font(Game::getFont()),
@@ -78,7 +76,7 @@ void ConfigMenu::init() {
     wordsColor = t.hooverButt;
     buttColl = t.colorButt;
     Game::setTheme(t);
-    gamePlay.updateWordColor(wordsColor);
+    gamePlay.updateColors(wordsColor,buttColl);
     for (auto& i : configOptions) {
         i.update();
     }
@@ -142,7 +140,7 @@ void ConfigMenu::update(const sf::Event& event) {
                                          startButt.setOutlineColor(wordsColor);
                                          startButt.setFillColor(buttColl);
                                          Game::setTheme(newTheme);
-                                         gamePlay.updateWordColor(wordsColor);
+                                         gamePlay.updateColors(wordsColor,buttColl);
                                          for (auto& i : configOptions) {
                                              i.update();
                                          }
@@ -200,7 +198,7 @@ void ConfigMenu::update(const sf::Event& event) {
                                          startButt.setOutlineColor(wordsColor);
                                          startButt.setFillColor(buttColl);
                                          Game::setTheme(newTheme);
-                                         gamePlay.updateWordColor(wordsColor);
+                                         gamePlay.updateColors(wordsColor,buttColl);
                                          for (auto& i : configOptions) {
                                              i.update();
                                          }
@@ -247,6 +245,10 @@ void ConfigMenu::draw() {
     }
 }
 void ConfigMenu::setDefColor() {}
+
+void ConfigMenu::setTxtCenter() {
+    CenterEnt::RectSpTextCentre(startText,startButt,window);
+}
 
 
 

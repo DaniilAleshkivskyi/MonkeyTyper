@@ -7,5 +7,6 @@ public:
     virtual void setDefColor() = 0;
     virtual void draw() = 0;
     virtual void init() = 0;
+    virtual void setTxtCenter() = 0;
     virtual ~IGameState() = default;
 };

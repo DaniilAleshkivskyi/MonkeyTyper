@@ -260,19 +260,20 @@ void ConfigOption::changeThemeColor() {
         label.setFillColor(hooverButt);
         value.setFillColor(hooverButt);
 
+        button.setFillColor(colorButt);
+        button.setOutlineColor(hooverButt);
+
         keyDecB.first.setFillColor(colorButt);
         keyDecB.first.setOutlineColor(hooverButt);
         keyDecB.second.setFillColor(hooverButt);
         leftButton.second.setFillColor(hooverButt);
-
-
-        button.setFillColor(colorButt);
-        button.setOutlineColor(hooverButt);
+        leftButton.first.setOutlineColor(hooverButt);
 
         keyIncB.first.setFillColor(colorButt);
         keyIncB.first.setOutlineColor(hooverButt);
         keyIncB.second.setFillColor(hooverButt);
         rightButton.second.setFillColor(hooverButt);
+        rightButton.first.setOutlineColor(hooverButt);
 }
 
 

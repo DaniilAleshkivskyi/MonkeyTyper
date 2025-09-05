@@ -118,3 +118,8 @@ void BestScoresMenu::bestScoresSearcher(std::string& bestScoresPath,
         }
     }
 }
+
+void BestScoresMenu::setTxtCenter() {
+    CenterVecEnt::RectSpTextCentre(bestScoresText,bestScoresShapes,window);
+}
+
